@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">PM 2.5 Monitor</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="country_prompt">Choose a country</string>
+
+    <string-array name="country_arrays">
+        <item></item>
+        <item>Cầu giấy</item>
+        <item>Ba Đình</item>
+        <item>Hai Bà Trưng</item>
+    </string-array>
+
+    <string name="language_prompt">Choose a language </string>
+    <string-array name="language_array">
+        <item>Tiếng Việt </item>
+        <item>Tiếng Anh</item>
+    </string-array>
+</resources>
