@@ -1,5 +1,7 @@
 package com.example.thanhhang.mnsfimo;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by ThanhHang on 12/2/2016.
  */
@@ -9,6 +11,7 @@ public class Love {
     int aqi;
     int DoAm;
     int NhietDo;
+    LatLng latLng;
 
     public Love(String diadiem) {
         this.diadiem = diadiem;
@@ -18,11 +21,12 @@ public class Love {
         return diadiem;
     }
 
-    public Love(String diadiem, int aqi, int doAm, int nhietDo) {
+    public Love(String diadiem, int aqi, int doAm, int nhietDo,LatLng latLng) {
         this.diadiem = diadiem;
         this.aqi = aqi;
         DoAm = doAm;
         NhietDo = nhietDo;
+        this.latLng = latLng;
     }
 
     public void setDiadiem(String diadiem) {

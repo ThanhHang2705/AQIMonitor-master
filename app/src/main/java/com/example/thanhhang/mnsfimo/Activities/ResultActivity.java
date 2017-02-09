@@ -27,11 +27,11 @@ public class ResultActivity extends AppCompatActivity {
 
     }
     private void getListKQ(ArrayList<KQNode> a){
-        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","2.5"));
+       /* a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","2.5"));
         a.add(new KQNode(2,"CV Cầu Giấy","Cầu giấy","2"));
         a.add(new KQNode(3,"CV Nghĩa đô","Xuân Thủy","1"));
         a.add(new KQNode(5,"ĐHBK","Hai Bà Trưng","6"));
-        a.add(new KQNode(5,"ĐHCN","Nhổn","8"));
+        a.add(new KQNode(5,"ĐHCN","Nhổn","8"));*/
 
 
     }

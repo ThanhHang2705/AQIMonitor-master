@@ -1,5 +1,7 @@
 package com.example.thanhhang.mnsfimo;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by ThanhHang on 12/6/2016.
  */
@@ -9,12 +11,14 @@ public class KQNode {
     private String nameNode;
     private String address;
     private String PM;
+    LatLng latLng;
 
-    public KQNode(int ID, String nameNode, String address, String PM) {
+    public KQNode(int ID, String nameNode, String address, String PM, LatLng latLng) {
         this.ID = ID;
         this.nameNode = nameNode;
         this.address = address;
         this.PM = PM;
+        this.latLng = latLng;
     }
 
     public int getID() {
@@ -47,5 +51,13 @@ public class KQNode {
 
     public void setPM(String PM) {
         this.PM = PM;
+    }
+
+    public LatLng getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(LatLng latLng) {
+        this.latLng = latLng;
     }
 }
