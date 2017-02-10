@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Chia se", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_Feedback) {
             sendEmail();
+
         } else if (id == R.id.nav_introduce) {
             startActivity(new Intent(this, IntroduceActivity.class));
         } else if (id == R.id.nav_rate) {
