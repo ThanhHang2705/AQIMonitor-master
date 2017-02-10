@@ -37,7 +37,6 @@ public class Detail extends AppCompatActivity {
             PM = bundle.getInt("PM");
         }
 
-        /*Toast.makeText(this,PM,Toast.LENGTH_LONG).show();*/
         BarChart chart = (BarChart) findViewById(R.id.bar_graph);
         BarChart chart2 = (BarChart) findViewById(R.id.bar_graph2);
         BarChart chart3 = (BarChart) findViewById(R.id.bar_graph3);
@@ -60,7 +59,6 @@ public class Detail extends AppCompatActivity {
 
         AddValuesToBARENTRY();
 
-        AddValuesToBarEntryLabels();
 
         Bardataset = new BarDataSet(BARENTRY, "Projects");
 
@@ -117,15 +115,6 @@ public class Detail extends AppCompatActivity {
         /*BARENTRY.add(new BarEntry(0,PMToInsert.get(24)));*/
     }
 
-    public void AddValuesToBarEntryLabels(){
 
-        BarEntryLabels.add("January");
-        BarEntryLabels.add("February");
-        BarEntryLabels.add("March");
-        BarEntryLabels.add("April");
-        BarEntryLabels.add("May");
-        BarEntryLabels.add("June");
-
-    }
 
 }
