@@ -75,8 +75,8 @@ public class MapFragment extends Fragment {
         UpdateListNameNode();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, COUNTRIES2);
-        address = (AutoCompleteTextView) v.findViewById(R.id.address);
-        address.setAdapter(adapter);
+        /*address = (AutoCompleteTextView) v.findViewById(R.id.address);
+        address.setAdapter(adapter);*/
 
         /*address.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

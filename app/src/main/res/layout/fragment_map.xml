@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/map" />
 
-    <LinearLayout
+    <!--<LinearLayout
         android:orientation="vertical"
         android:layout_width="320dp"
         android:layout_height="41dp"
@@ -30,9 +30,14 @@
             android:id="@+id/address"
            />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
+    <ListView
 
+        android:layout_width="match_parent"
+        android:layout_height="510dp"
+        android:id="@+id/result_4_basic_search"
+        android:background="@color/colorWhite"/>
 
 
 </FrameLayout>
