@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     public ViewPager pager;
     public TabLayout tabLayout;
     private static String[] COUNTRIES = new String[] {
-            "Belgium", "France", "Italy", "Germany", "Spain"
+            "Sân Bay Nội Bài", "VNU", "Thành Cổ Sơn Tây", "Chùa Hương", "Bát Tràng"
     };
     ListView listView;
 

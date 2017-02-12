@@ -17,7 +17,7 @@
                 android:layout_margin="0dp"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
-                android:src="@drawable/ic_app"
+                android:src="@drawable/ic_app1"
                 />
 
             <TextView
