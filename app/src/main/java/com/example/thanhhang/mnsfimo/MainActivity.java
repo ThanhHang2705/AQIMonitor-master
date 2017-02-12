@@ -114,11 +114,13 @@ public class MainActivity extends AppCompatActivity
         SearchView searchView = (SearchView)searchItem.getActionView();
         listView = (ListView)findViewById(R.id.result_4_basic_search);
         final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, COUNTRIES);
-        listView.setAdapter(arrayAdapter);
-        listView.setVisibility(View.GONE);
+//        listView.setAdapter(arrayAdapter);
+//        listView.setVisibility(View.GONE);
         searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
             @Override
             public void onClick(View v) {
+                listView.setAdapter(arrayAdapter);
+
                 listView.setVisibility(View.VISIBLE);
             }
         });
