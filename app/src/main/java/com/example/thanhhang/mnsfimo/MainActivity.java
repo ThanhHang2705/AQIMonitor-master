@@ -119,8 +119,6 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
-
                 listView.setVisibility(View.VISIBLE);
             }
         });
@@ -152,7 +150,6 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
-
         return super.onCreateOptionsMenu(menu);
 
     }
