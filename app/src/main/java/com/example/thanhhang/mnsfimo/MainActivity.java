@@ -28,7 +28,7 @@ import com.example.thanhhang.mnsfimo.Activities.SettingActivity;
 import com.example.thanhhang.mnsfimo.Adapters.PagerAdapter;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener  {
     public ViewPager pager;
     public TabLayout tabLayout;
     private static String[] COUNTRIES = new String[] {
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
 
-        // listview cho để show kết quả tìm kiếm
+
 
         // Code khi dong mo navigation
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -106,52 +107,52 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem searchItem = menu.findItem(R.id.basic_search);
-
-        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-
-        SearchView searchView = (SearchView)searchItem.getActionView();
-        listView = (ListView)findViewById(R.id.result_4_basic_search);
-        final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, COUNTRIES);
-        listView.setAdapter(arrayAdapter);
-        listView.setVisibility(View.GONE);
-        searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listView.setVisibility(View.VISIBLE);
-            }
-        });
-
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                listView.setVisibility(View.GONE);
-                return false;
-            }
-        });
-
-        if (searchItem != null) {
-            searchView = (SearchView) searchItem.getActionView();
-        }
-        if (searchView != null) {
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
-
-        }
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                arrayAdapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-
+//        getMenuInflater().inflate(R.menu.menu_main, menu);
+//        MenuItem searchItem = menu.findItem(R.id.basic_search);
+//
+//        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
+//
+//        SearchView searchView = (SearchView)searchItem.getActionView();
+//        listView = (ListView)findViewById(R.id.result_4_basic_search);
+//        final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, COUNTRIES);
+//        listView.setAdapter(arrayAdapter);
+//        listView.setVisibility(View.GONE);
+//        searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                listView.setVisibility(View.VISIBLE);
+//            }
+//        });
+//
+//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+//            @Override
+//            public boolean onClose() {
+//                listView.setVisibility(View.GONE);
+//                return false;
+//            }
+//        });
+//
+//        if (searchItem != null) {
+//            searchView = (SearchView) searchItem.getActionView();
+//        }
+//        if (searchView != null) {
+//            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
+//
+//        }
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                arrayAdapter.getFilter().filter(newText);
+//                return false;
+//            }
+//        });
+//        return super.onCreateOptionsMenu(menu);
+        return false;
     }
     protected void sendEmail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO);

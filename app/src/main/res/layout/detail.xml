@@ -17,6 +17,16 @@
             android:orientation="vertical" >
 
             <TextView
+
+                android:text="Địa Điểm"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:textSize="30dp"
+                android:textColorHighlight="@color/colorPrimary"
+                android:id="@+id/address" />
+
+            <TextView
+                android:layout_marginTop="50dp"
                 android:text="PM2.5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

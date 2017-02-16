@@ -32,7 +32,6 @@ public class PagerAdapter  extends FragmentStatePagerAdapter {
 
             case 0:
                 frag=new MapFragment();
-
                 break;
             case 1:
                 frag=new ListmainFragment();
@@ -56,7 +55,7 @@ public class PagerAdapter  extends FragmentStatePagerAdapter {
                 title="Map";
                 break;
             case 1:
-                title="Favourite";
+                title="FAVOURITE";
                 break;
             case 2:
                 title="Search";

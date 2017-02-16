@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.example.thanhhang.mnsfimo.FragmentMain.SearchFragment">
 
@@ -128,6 +129,8 @@
                 android:prompt="@string/country_prompt"
                 android:id="@+id/spinner6" />
 
+
+
         </LinearLayout>
 
     </LinearLayout>
@@ -150,6 +153,7 @@
             android:layout_weight="2"/>
 
 
+
         <SeekBar
 
             android:background="@drawable/selector_frame"
@@ -157,7 +161,8 @@
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:max="30"
-            android:id="@+id/temperature" />
+            android:id="@+id/temperature"
+            />
 
     </LinearLayout>
     <LinearLayout

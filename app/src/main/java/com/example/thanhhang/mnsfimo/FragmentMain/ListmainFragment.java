@@ -49,8 +49,8 @@ public class ListmainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
-       /* LayoutInflater factory = LayoutInflater.from(getContext());*/
+
+
         final View view = inflater.inflate(R.layout.fragment_listmain, null);
         /*View view =inflater.inflate(R.layout.fragment_listmain, container, false);*/
         /*listLove.add(new Love("Công viên cầu giấy",90,60,27));*/
@@ -73,6 +73,7 @@ public class ListmainFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Bundle bundle = new Bundle();
                         bundle.putInt("PM", love.getAqi());
+                        bundle.putString("Address",love.getDiadiem());
                         Intent intent = new Intent(getContext(), Detail.class);
                         intent.putExtra("TapTin", bundle);
                         startActivity(intent);
@@ -82,6 +83,8 @@ public class ListmainFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         view.setVisibility(View.GONE);
                         listLove.remove(positionToRemove);
+                        adapter = new ListLoveAdapter(listLove,getContext());
+                        list.setAdapter(adapter);
                     }});
                 adb.show();
 
@@ -90,9 +93,4 @@ public class ListmainFragment extends Fragment {
         });
         return view;
     }
-
-    public void onCreateOptionsMenu (Menu menu, MenuInflater inflater){
-        menu.clear();
-    }
-
 }

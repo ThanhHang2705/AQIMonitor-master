@@ -1,6 +1,8 @@
 package com.example.thanhhang.mnsfimo.FragmentMain;
 
 
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,15 +14,22 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +68,9 @@ public class MapFragment extends Fragment {
     private static String[] COUNTRIES = new String[] {
             "Belgium", "France", "Italy", "Germany", "Spain"
     };
+
+    ListView listView;
+    ArrayAdapter arrayAdapter;
     private  static ArrayList<String> COUNTRIES2 ;
     private ArrayList<KQNode> ListNode;
     public MapFragment() {
@@ -70,23 +82,25 @@ public class MapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        setHasOptionsMenu(true);
         v = inflater.inflate(R.layout.fragment_map, container, false);
         UpdateListNode();
         UpdateListNameNode();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_dropdown_item_1line, COUNTRIES2);
-        /*address = (AutoCompleteTextView) v.findViewById(R.id.address);
-        address.setAdapter(adapter);*/
-
-        /*address.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        listView = (ListView) v.findViewById(R.id.result_4_basic_search);
+        arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, COUNTRIES2);
+        listView.setAdapter(arrayAdapter);
+        listView.setVisibility(View.GONE);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                TabLayout tabLayout = ((MainActivity)getActivity()).tabLayout;
-                tabLayout.setVisibility(View.GONE);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("PM", Integer.parseInt(ListNode.get(position).getPM()));
+                bundle.putString("Address",ListNode.get(position).getNameNode());
+                Intent intent = new Intent(getContext(), Detail.class);
+                intent.putExtra("TapTin", bundle);
+                startActivity(intent);
             }
-
-        });*/
+        });
 
         mMapView = (MapView) v.findViewById(R.id.map);
 
@@ -128,52 +142,7 @@ public class MapFragment extends Fragment {
 
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(ListNode.get(i).getLatLng(),10));
                 }
-               /* LatLng NoiBai = new LatLng(21.217712, 105.792383);
-                PM = "40";
-                map.addMarker(new MarkerOptions()
-                        .position(NoiBai)
-                        .title("San Bay Noi Bai")
-                        .icon( BitmapDescriptorFactory.fromBitmap(DrawMarker(PM, R.mipmap.green_square2)))
-                        .snippet(PM));
 
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(NoiBai,10));
-
-                LatLng vnu = new LatLng(21.037442, 105.781376);
-                PM="30";
-                map.addMarker(new MarkerOptions()
-                        .position(vnu)
-                        .title("VNU")
-                        .icon( BitmapDescriptorFactory.fromBitmap(DrawMarker(PM, R.mipmap.green_square2)))
-                        .snippet(PM));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(vnu,10));
-
-                LatLng SonTay = new LatLng(21.139634, 105.50423);
-                PM="35";
-                map.addMarker(new MarkerOptions()
-                        .position(SonTay)
-                        .title("Thanh Co Son Tay")
-                        .icon( BitmapDescriptorFactory.fromBitmap(DrawMarker(PM,R.mipmap.green_square2)))
-                        .snippet(PM));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(SonTay,10));
-
-                LatLng ChuaHuong = new LatLng(20.616085, 105.744802);
-                PM="20";
-                Marker m = map.addMarker(new MarkerOptions()
-                        .position(ChuaHuong).title("Chua Huong")
-                        *//*.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))*//*
-                        .icon( BitmapDescriptorFactory.fromBitmap(DrawMarker(PM,R.mipmap.green_square2)))
-                        .snippet(PM));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(ChuaHuong,10));
-                *//*m.showInfoWindow();*//*
-
-                LatLng BatTrang = new LatLng(20.976217, 105.912747);
-                PM = "30";
-                map.addMarker(new MarkerOptions()
-                        .position(BatTrang)
-                        .title("Bat Trang")
-                        .icon( BitmapDescriptorFactory.fromBitmap(DrawMarker(PM,R.mipmap.green_square2)))
-                        .snippet(PM));
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(BatTrang,10));*/
                 map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
 
 
@@ -209,7 +178,7 @@ public class MapFragment extends Fragment {
 
                                 Bundle bundle = new Bundle();
                                 bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
-
+                                bundle.putString("Address", marker.getTitle());
                                 Intent intent = new Intent(getContext(),Detail.class);
                                 intent.putExtra("TapTin", bundle);
                                 startActivity(intent);
@@ -252,6 +221,7 @@ public class MapFragment extends Fragment {
         return v;
     }
 
+
     public void UpdateListNode(){
         ListNode = new ArrayList<>();
         ListNode.add(new KQNode(1, "Sân Bay Nội Bài", "Nội Bài", "120", new LatLng(21.217712, 105.792383)));
@@ -268,6 +238,46 @@ public class MapFragment extends Fragment {
         }
 
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        MenuItem searchItem = menu.findItem(R.id.basic_search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+//        searchView.setOnQueryTextListener(this);
+//        searchView.setQueryHint("Search");
+        searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                listView.setVisibility(View.GONE);
+                return false;
+            }
+        });
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                arrayAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+
     @Override
     public void onResume() {
         super.onResume();
@@ -324,5 +334,6 @@ public class MapFragment extends Fragment {
         /*Toast.makeText(getContext(),Float.toString(scale),Toast.LENGTH_LONG).show();*/
         return newImage;
     }
+
 
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -27,6 +28,7 @@ public class Detail extends AppCompatActivity {
     BarDataSet Bardataset ;
     BarData BARDATA;
     static int PM;
+    String Address;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +37,13 @@ public class Detail extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("TapTin");
         if(bundle != null){
             PM = bundle.getInt("PM");
+            Address = bundle.getString("Address");
         }
-
+        TextView address = (TextView)findViewById(R.id.address);
         BarChart chart = (BarChart) findViewById(R.id.bar_graph);
         BarChart chart2 = (BarChart) findViewById(R.id.bar_graph2);
         BarChart chart3 = (BarChart) findViewById(R.id.bar_graph3);
-
+        address.setText(Address);
         chart.getXAxis().setEnabled(false);
        /* chart.setDrawBarShadow(false);*/
         chart.getAxisRight().setEnabled(false);
