@@ -17,16 +17,15 @@
             android:orientation="vertical" >
 
             <TextView
-
                 android:text="Địa Điểm"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:textSize="30dp"
-                android:textColorHighlight="@color/colorPrimary"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:textColor="@color/colorPrimary"
                 android:id="@+id/address" />
 
             <TextView
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="20dp"
                 android:text="PM2.5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,8 +34,8 @@
             <com.github.mikephil.charting.charts.BarChart
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="159dp"
-                    android:id="@+id/bar_graph3">
+                    android:layout_height="250dp"
+                    android:id="@+id/bar_graph1">
 
                 </com.github.mikephil.charting.charts.BarChart>
 
@@ -49,7 +48,7 @@
             <com.github.mikephil.charting.charts.BarChart
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
-                    android:layout_height="159dp"
+                    android:layout_height="250dp"
                     android:id="@+id/bar_graph2">
 
                 </com.github.mikephil.charting.charts.BarChart>
@@ -61,8 +60,8 @@
 
             <com.github.mikephil.charting.charts.BarChart
                     android:layout_width="match_parent"
-                    android:layout_height="159dp"
-                    android:id="@+id/bar_graph">
+                    android:layout_height="250dp"
+                    android:id="@+id/bar_graph3">
 
                 </com.github.mikephil.charting.charts.BarChart>
         </LinearLayout>

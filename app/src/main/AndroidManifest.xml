@@ -28,14 +28,16 @@
         <activity android:name=".Activities.AddnodeActivity" />
         <activity android:name=".Activities.SettingActivity" />
         <activity android:name=".Activities.IntroduceActivity" />
-        <activity android:name=".Activities.Detail" />
-        <activity android:name=".Activities.ResultActivity" />
-        <activity android:name=".Activities.SplashActivity">
+        <activity android:name=".Activities.Detail" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".Activities.ResultActivity" />
+        <activity android:name=".Activities.SplashActivity">
+
         </activity>
     </application>
 

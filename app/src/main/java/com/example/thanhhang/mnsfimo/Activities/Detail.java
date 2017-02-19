@@ -4,120 +4,157 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.R;
+import com.example.thanhhang.mnsfimo.customdata.MyAxisValueFormatter;
+import com.example.thanhhang.mnsfimo.customdata.TimeAxisValueFormatter;
+import com.example.thanhhang.mnsfimo.customdata.XYMarkerView;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by HP on 1/15/2017.
  */
 
-public class Detail extends AppCompatActivity {
-
-    BarChart chart ;
-    ArrayList<BarEntry> BARENTRY ;
-    ArrayList<String> BarEntryLabels ;
-    BarDataSet Bardataset ;
-    BarData BARDATA;
+public class Detail extends AppCompatActivity implements OnChartValueSelectedListener {
     static int PM;
     String Address;
+    private BarChart chart1, chart2, chart3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("TapTin");
-        if(bundle != null){
+        if (bundle != null) {
             PM = bundle.getInt("PM");
             Address = bundle.getString("Address");
         }
-        TextView address = (TextView)findViewById(R.id.address);
-        BarChart chart = (BarChart) findViewById(R.id.bar_graph);
-        BarChart chart2 = (BarChart) findViewById(R.id.bar_graph2);
-        BarChart chart3 = (BarChart) findViewById(R.id.bar_graph3);
-        address.setText(Address);
-        chart.getXAxis().setEnabled(false);
-       /* chart.setDrawBarShadow(false);*/
-        chart.getAxisRight().setEnabled(false);
+
+        chart1 = (BarChart) findViewById(R.id.bar_graph1);
+        chart2 = (BarChart) findViewById(R.id.bar_graph2);
+        chart3 = (BarChart) findViewById(R.id.bar_graph3);
+        init(chart1);
+        init(chart2);
+        init(chart3);
+
+
+
+
+
+    }
+
+    private void init(BarChart chart) {
+        chart.setOnChartValueSelectedListener(this);
         chart.setDrawBarShadow(false);
-
-        chart2.getXAxis().setEnabled(false);
-        chart2.getAxisRight().setEnabled(false);
-        chart2.setDrawBarShadow(false);
-
-        chart3.getXAxis().setEnabled(false);
-        chart3.getAxisRight().setEnabled(false);
-        chart3.setDrawBarShadow(false);
-        BARENTRY = new ArrayList<>();
-
-        BarEntryLabels = new ArrayList<String>();
-
-        AddValuesToBARENTRY();
+        chart.setDrawValueAboveBar(true);
+        chart.getDescription().setEnabled(false);
+        chart.setPinchZoom(false);
+        chart.setDrawGridBackground(false);
+        chart.setDrawValueAboveBar(true);
+        chart.setDoubleTapToZoomEnabled(true);
+        chart.setPinchZoom(true);
+        chart.setMaxVisibleValueCount(60);
+        IAxisValueFormatter xAxisFormatter = new TimeAxisValueFormatter();
 
 
-        Bardataset = new BarDataSet(BARENTRY, "Projects");
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setTextColor(Color.WHITE);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+        xAxis.setLabelCount(7);
+//        xAxis.setValueFormatter(xAxisFormatter);
 
-        ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-        /*dataSets.add(BarEntryLabels);*/
-        BARDATA = new BarData(Bardataset);
-        BARDATA.setBarWidth(0.9f);
+        IAxisValueFormatter custom = new MyAxisValueFormatter();
 
-        ArrayList<Integer> colors = new ArrayList<>();
-        for(int i=0;i<BARENTRY.size();i++){
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setLabelCount(8, false);
+        leftAxis.setValueFormatter(custom);
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
 
-            BarEntry barEntry = BARENTRY.get(i);
-            if(barEntry.getY()<=50){
-                colors.add(Color.rgb(9, 242, 71));
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
 
-            }else if(barEntry.getY()<=100 && barEntry.getY()>50){
-                colors.add(Color.rgb(236, 252, 10));
+        Legend l = chart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setForm(Legend.LegendForm.SQUARE);
+        l.setFormSize(9f);
+        l.setTextSize(11f);
+        l.setXEntrySpace(4f);
 
-            }
+        XYMarkerView mv = new XYMarkerView(getApplicationContext(), xAxisFormatter);
+        mv.setChartView(chart); // For bounds control
+        chart.setMarker(mv); // Set the marker to the chart
+
+        setData(23, 1000,chart);
+    }
+
+    private void setData(int count, float range, BarChart chart) {
+
+        float start = 1f;
+
+        ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
+
+        for (int i = (int) start; i < start + count + 1; i++) {
+            float mult = (range + 1);
+            float val = (float) (Math.random() * mult);
+            yVals1.add(new BarEntry(i, val));
         }
 
-        Bardataset.setColors(colors);
+        BarDataSet set1;
 
-        chart.setData(BARDATA);
-        chart2.setData(BARDATA);
-        chart3.setData(BARDATA);
+        if (chart.getData() != null && chart.getData().getDataSetCount() > 0) {
+            set1 = (BarDataSet) chart.getData().getDataSetByIndex(0);
+            set1.setValues(yVals1);
+            chart.getData().notifyDataChanged();
+            chart.notifyDataSetChanged();
+        } else {
+            set1 = new BarDataSet(yVals1, "Time of a day");
+            set1.setLabel("");
+            set1.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(set1);
+
+            BarData data = new BarData(dataSets);
+            data.setValueTextSize(10f);
+            data.setBarWidth(0.9f);
+            data.setDrawValues(false);
+            chart.setData(data);
+        }
+    }
+
+
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
 
     }
 
-    public void AddValuesToBARENTRY(){
-        ArrayList<Integer> PMToInsert = new ArrayList<>();
-        /*PMToInsert.add(PM);*/
-        if(PMToInsert.size()>24){
-            PMToInsert.remove(0);
-            for(int i=0;i<24;i++){
-                PMToInsert.add(PMToInsert.get(i+1));
-                PMToInsert.remove(24);
-            }
-        }
-        if (PMToInsert.size()<=24){
-            for(int i=0;i<24;i++){
-                Random random = new Random();
-                int PM_Temp = random.nextInt(91)+1;
-                PMToInsert.add(PM_Temp);
-                if(i==23){
-                    PMToInsert.add(PM);
-                }
-            }
-        }
-        for(int i = 24;i>0;i--){
-            BARENTRY.add(new BarEntry(i, PMToInsert.get(i)));
-        }
-        /*BARENTRY.add(new BarEntry(0,PMToInsert.get(24)));*/
-    }
+    @Override
+    public void onNothingSelected() {
 
+    }
 
 
 }
