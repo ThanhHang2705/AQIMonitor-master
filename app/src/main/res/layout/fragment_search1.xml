@@ -3,20 +3,33 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="TextView"
-        android:layout_width="82dp"
-        android:layout_height="49dp"
-        android:id="@+id/textView7" />
-
-    <Spinner
-        android:layout_width="198dp"
-        android:layout_height="65dp"
-        android:id="@+id/spinner2" />
-
-    <GridLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </GridLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="Địa Điểm"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView11"
+                android:layout_weight="1" />
+
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Địa điểm"
+                android:ems="10"
+                android:id="@+id/editText5"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -4,249 +4,205 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
     tools:context="com.example.thanhhang.mnsfimo.FragmentMain.SearchFragment">
 
 
     <LinearLayout
-        android:layout_margin="5dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Quốc gia"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"/>
+        android:layout_height="match_parent">
         <LinearLayout
-            android:layout_width="120dp"
-            android:layout_weight="3"
-            android:background="@drawable/selector_frame"
-            android:layout_height="match_parent">
-            <Spinner
-                android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:entries="@array/country_arrays"
-                android:prompt="@string/country_prompt"
+                android:text="Địa điểm"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:layout_weight="2"/>
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_weight="3"
+                android:background="@drawable/selector_frame"
+                android:layout_height="60dp">
+                <!--<Spinner-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:entries="@array/country_arrays"-->
+                    <!--android:prompt="@string/country_prompt"-->
+                    <!--/>-->
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/search_address"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/result_4_search_address">
+
+        </ListView>
+
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="PM 2.5"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:layout_weight="2"
+                android:id="@+id/textView7" />
+
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_weight="3"
+                android:background="@drawable/selector_frame"
+                android:layout_height="60dp">
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/country_arrays"
+                    android:prompt="@string/country_prompt"
+                    android:id="@+id/spinner6" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Nhiệt độ"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:layout_weight="2"/>
+
+
+
+            <SeekBar
+
+                android:background="@drawable/selector_frame"
+                android:layout_width="120dp"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:max="30"
+                android:id="@+id/temperature"
                 />
 
         </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Quận"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"/>
         <LinearLayout
-            android:layout_width="120dp"
-            android:layout_weight="3"
-            android:background="@drawable/selector_frame"
-            android:layout_height="match_parent">
-            <Spinner
-                android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:entries="@array/country_arrays"
-                android:prompt="@string/country_prompt"
-                />
+                android:text="Độ ẩm"
+                android:layout_marginTop="10dp"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:layout_weight="2"
+                android:id="@+id/textView2" />
+
+            <SeekBar
+                android:id="@+id/humidity"
+                android:layout_width="120dp"
+                android:layout_weight="3"
+                android:background="@drawable/selector_frame"
+                android:layout_height="60dp"
+                android:max="30" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_margin="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="thời gian"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:textColor="#000"
+                android:layout_weight="2"/>
+            <LinearLayout
+                android:layout_width="120dp"
+                android:layout_weight="3"
+                android:background="@drawable/selector_frame"
+                android:layout_height="60dp">
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:entries="@array/country_arrays"
+                    android:prompt="@string/country_prompt"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btx_reset"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="Hủy"
+                android:layout_marginLeft="5dp"
+                android:textSize="15sp"
+                android:layout_weight="1"/>
+            <Button
+                android:id="@+id/btx_timNangCao"
+                android:layout_width="0dp"
+                android:layout_height="60dp"
+                android:text="Tìm"
+                android:textSize="15sp"
+                android:layout_weight="1"/>
+
 
         </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Phường"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"
-            android:id="@+id/textView6" />
-
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_weight="3"
-            android:background="@drawable/selector_frame"
-            android:layout_height="match_parent">
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:entries="@array/country_arrays"
-                android:prompt="@string/country_prompt"
-                android:id="@+id/spinner5" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="PM 2.5"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"
-            android:id="@+id/textView7" />
-
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_weight="3"
-            android:background="@drawable/selector_frame"
-            android:layout_height="match_parent">
-
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:entries="@array/country_arrays"
-                android:prompt="@string/country_prompt"
-                android:id="@+id/spinner6" />
-
-
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Nhiệt độ"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"/>
-
-
-
-        <SeekBar
-
-            android:background="@drawable/selector_frame"
-            android:layout_width="120dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:max="30"
-            android:id="@+id/temperature"
-            />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Độ ẩm"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"
-            android:id="@+id/textView2" />
-
-        <SeekBar
-            android:id="@+id/humidity"
-            android:layout_width="120dp"
-            android:layout_weight="3"
-            android:background="@drawable/selector_frame"
-            android:layout_height="match_parent"
-            android:max="30" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="thời gian"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
-            android:textColor="#000"
-            android:layout_weight="2"/>
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_weight="3"
-            android:background="@drawable/selector_frame"
-            android:layout_height="match_parent">
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:entries="@array/country_arrays"
-                android:prompt="@string/country_prompt"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        >
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"/>
-
-        <Button
-            android:id="@+id/btx_reset"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Hủy"
-            android:layout_marginLeft="5dp"
-            android:textSize="15sp"
-            android:layout_weight="1"/>
-        <Button
-        android:id="@+id/btx_timNangCao"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:text="Tìm"
-        android:textSize="15sp"
-        android:layout_weight="1"/>
-
-
-    </LinearLayout>
-
 </LinearLayout>

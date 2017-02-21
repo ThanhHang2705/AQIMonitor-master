@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.Love;
 import com.example.thanhhang.mnsfimo.R;
 
@@ -17,14 +18,14 @@ import java.util.ArrayList;
  */
 
 public class ListLoveAdapter extends BaseAdapter {
-    ArrayList<Love> listLove;
+    ArrayList<KQNode> listLove;
     LayoutInflater inflater;
     TextView txt_diadiem;
     TextView txt_aqi;
     TextView txt_doAm;
     TextView txt_nhietDo;
 
-    public ListLoveAdapter(ArrayList<Love> listLove, Context context) {
+    public ListLoveAdapter(ArrayList<KQNode> listLove, Context context) {
         this.listLove = listLove;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -35,7 +36,7 @@ public class ListLoveAdapter extends BaseAdapter {
     }
 
     @Override
-    public Love getItem(int position) {
+    public KQNode getItem(int position) {
         return listLove.get(position);
     }
 
@@ -53,11 +54,12 @@ public class ListLoveAdapter extends BaseAdapter {
         txt_aqi = (TextView) view.findViewById(R.id.txt_AQI);
         txt_doAm = (TextView) view.findViewById(R.id.txt_DoAm);
         txt_nhietDo = (TextView) view.findViewById(R.id.txt_nhietDo);
-        Love love = listLove.get(position);
-        txt_diadiem.setText(love.getDiadiem()+"");
-        txt_aqi.setText(love.getAqi()+"");
-        txt_doAm.setText(love.getDoAm()+"");
-        txt_nhietDo.setText(love.getNhietDo()+"");
+
+        KQNode kqNode = listLove.get(position);
+        txt_diadiem.setText(kqNode.getNameNode()+"");
+        txt_aqi.setText(kqNode.getPM()+"");
+        txt_doAm.setText(kqNode.getHumidity()+"");
+        txt_nhietDo.setText(kqNode.getTemperature()+"");
         return view;
     }
 }

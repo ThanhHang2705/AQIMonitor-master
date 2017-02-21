@@ -2,8 +2,11 @@ package com.example.thanhhang.mnsfimo.FragmentMain;
 
 
 import android.app.SearchManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -35,6 +38,7 @@ import android.widget.Toast;
 
 
 import com.example.thanhhang.mnsfimo.Activities.Detail;
+import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.Love;
 import com.example.thanhhang.mnsfimo.MainActivity;
@@ -197,10 +201,20 @@ public class MapFragment extends Fragment {
                                 pager.setCurrentItem(1);
                                 FragmentManager FM = getActivity().getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = FM.beginTransaction();
-                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
-                                ListmainFragment fragment1 = new ListmainFragment(love);
+                                KQNode kqNode = new KQNode(marker.getTitle().toString(), marker.getSnippet(),23,43,marker.getPosition());
+//                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
+                                InsertDataToFavouriteListSQLite(marker.getTitle().toString());
+
+                                //fragmentTransaction.remove(getFragmentManager().findFragmentById(R.id.fragment_listmain));
+                                //getFragmentManager().executePendingTransactions();
+                                ListmainFragment fragment1 = new ListmainFragment();
+//                                fragment1.UpdateListLove();
+//                                fragment1.UpdateAdapter();
                                 fragmentTransaction.replace(R.id.fragment_listmain,fragment1);
+                                fragmentTransaction.detach(fragment1);
+                                fragmentTransaction.attach(fragment1);
                                 fragmentTransaction.commit();
+
 
 
                             }
@@ -212,33 +226,14 @@ public class MapFragment extends Fragment {
                     }
                 });
 
-
             }
         });
-
-
 
         return v;
     }
 
 
-    public void UpdateListNode(){
-        ListNode = new ArrayList<>();
-        ListNode.add(new KQNode(1, "Sân Bay Nội Bài", "Nội Bài", "120", new LatLng(21.217712, 105.792383)));
-        ListNode.add(new KQNode(2, "VNU", "123 Xuân Thủy, Cầu Giấy, Hà Nội", "151", new LatLng(21.037442, 105.781376)));
-        ListNode.add(new KQNode(3, "Thành Cổ Sơn Tây", "Thị xã Sơn Tây", "86", new LatLng(21.139634, 105.50423)));
-        ListNode.add(new KQNode(4, "Chùa Hương", "Hương Sơn, Mỹ Đức, Hà Nội", "40", new LatLng(20.616085, 105.744802)));
-        ListNode.add(new KQNode(5, "Bát Tràng", "Bát Tràng, Gia Lâm, Hà Nội", "55", new LatLng(20.976217, 105.912747)));
-    }
-
-    public void UpdateListNameNode(){
-        COUNTRIES2 = new ArrayList<>();
-        for (int i=0;i<ListNode.size();i++){
-            COUNTRIES2.add(ListNode.get(i).getNameNode());
-        }
-
-    }
-
+    // Hiển thị thanh tìm kiếm cơ bản trên ActionBar
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_main, menu);
@@ -276,6 +271,40 @@ public class MapFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
+    //Đưa dữ liệu từ List_Favourite.sqlite vào mảng
+    public void UpdateListNode(){
+        ListNode = new ArrayList<>();
+        ListNode = ((MainActivity)getActivity()).getDataFromSQLite();
+    }
+
+    //Cập nhật dữ liệu vào mảng COUNTRIES2
+    public void UpdateListNameNode(){
+        COUNTRIES2 = new ArrayList<>();
+        for (int i=0;i<ListNode.size();i++){
+            COUNTRIES2.add(ListNode.get(i).getNameNode());
+        }
+    }
+
+    //Hàm thêm Node vào trong danh sách yêu thích được lưu ở file List_Favourite.sqlite
+    public void InsertDataToFavouriteListSQLite(String NameNode){
+        int ID = 0;
+        for(int i=0;i<ListNode.size();i++){
+            String nameNode = ListNode.get(i).getNameNode();
+            if(NameNode.equals(nameNode)){
+                ID = ListNode.get(i).getID();
+                break;
+            }
+        }
+
+        SQLiteDatabase database = Database.initDatabase(getActivity(),"List_Favourite.sqlite");
+        Cursor cursor = database.rawQuery("SELECT * FROM Favourite",null);
+        cursor.getCount();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ID", ID);
+        database.insert("Favourite",null, contentValues);
+        cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        cursor.getCount();
+    }
 
 
     @Override
@@ -302,6 +331,7 @@ public class MapFragment extends Fragment {
         mMapView.onLowMemory();
     }
 
+    //Hàm để vẽ lại các Node trên Map thay cho biểu tượng picker của bản đồ
     @SuppressWarnings("unused")
     public Bitmap DrawMarker(String number,int idImage, int color){
         Bitmap bm = BitmapFactory.decodeResource(getResources(), idImage);

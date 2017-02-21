@@ -3,6 +3,8 @@ package com.example.thanhhang.mnsfimo;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -26,6 +28,10 @@ import com.example.thanhhang.mnsfimo.Activities.AddnodeActivity;
 import com.example.thanhhang.mnsfimo.Activities.IntroduceActivity;
 import com.example.thanhhang.mnsfimo.Activities.SettingActivity;
 import com.example.thanhhang.mnsfimo.Adapters.PagerAdapter;
+import com.example.thanhhang.mnsfimo.Data.Database;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener  {
@@ -34,7 +40,11 @@ public class MainActivity extends AppCompatActivity
     private static String[] COUNTRIES = new String[] {
             "Sân Bay Nội Bài", "VNU", "Thành Cổ Sơn Tây", "Chùa Hương", "Bát Tràng"
     };
+//    String DataFromSQLite[];
     ListView listView;
+    SQLiteDatabase database;
+    private static ArrayList<KQNode> DataFromSQLite;
+    private static ArrayList<KQNode> FavouriteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +63,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
-
+//        getDataFromSQLite();
+//        getFavouriteList();
 
 
         // Code khi dong mo navigation
@@ -107,51 +118,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        MenuItem searchItem = menu.findItem(R.id.basic_search);
-//
-//        SearchManager searchManager = (SearchManager) MainActivity.this.getSystemService(Context.SEARCH_SERVICE);
-//
-//        SearchView searchView = (SearchView)searchItem.getActionView();
-//        listView = (ListView)findViewById(R.id.result_4_basic_search);
-//        final ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, COUNTRIES);
-//        listView.setAdapter(arrayAdapter);
-//        listView.setVisibility(View.GONE);
-//        searchView.setOnSearchClickListener(new SearchView.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                listView.setVisibility(View.VISIBLE);
-//            }
-//        });
-//
-//        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-//            @Override
-//            public boolean onClose() {
-//                listView.setVisibility(View.GONE);
-//                return false;
-//            }
-//        });
-//
-//        if (searchItem != null) {
-//            searchView = (SearchView) searchItem.getActionView();
-//        }
-//        if (searchView != null) {
-//            searchView.setSearchableInfo(searchManager.getSearchableInfo(MainActivity.this.getComponentName()));
-//
-//        }
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                arrayAdapter.getFilter().filter(newText);
-//                return false;
-//            }
-//        });
-//        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return false;
     }
     protected void sendEmail() {
@@ -159,4 +126,52 @@ public class MainActivity extends AppCompatActivity
         emailIntent.setData(Uri.parse("mailto: thanhhang27051996@gmail.com"));
         startActivity(Intent.createChooser(emailIntent, "Send feedback to us"));
     }
+
+    public ArrayList<KQNode> getDataFromSQLite(){
+        database = Database.initDatabase(this, "pm_monitor.sqlite");
+        Cursor cursor = database.rawQuery("SELECT * FROM Data_Demo", null);
+        cursor.moveToFirst();
+        DataFromSQLite = new ArrayList();
+        for(int i=0;i<cursor.getCount();i++){
+            int ID = cursor.getInt(0);
+            String NameNode = cursor.getString(1);
+            String Address = cursor.getString(2);
+            String PM = cursor.getString(3);
+            LatLng latLng = new LatLng(cursor.getDouble(4),cursor.getDouble(5));
+            KQNode kqNode = new KQNode(ID,NameNode,Address,PM,latLng);
+            DataFromSQLite.add(kqNode);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        database.close();
+        return DataFromSQLite;
+    }
+
+
+    public ArrayList<KQNode> getFavouriteList(){
+        database = Database.initDatabase(this, "List_Favourite.sqlite");
+
+        Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        FavouriteList = new ArrayList<>();
+        int size = cursor.getCount();
+        cursor.moveToFirst();
+        for (int i=0;i<cursor.getCount(); i++){
+            int ID = cursor.getInt(0);
+            for (int j=0; j<DataFromSQLite.size(); j++){
+                if (ID == DataFromSQLite.get(j).getID()){
+                    String NameNode = DataFromSQLite.get(j).getNameNode();
+                    String PM = DataFromSQLite.get(j).getPM();
+                    int Humidity = 43;
+                    int Temperature = 32;
+                    LatLng latLng = DataFromSQLite.get(j).getLatLng();
+                    KQNode kqNode = new KQNode(NameNode,PM,Humidity,Temperature,latLng);
+                    FavouriteList.add(kqNode);
+                    break;
+                }
+            }
+            cursor.moveToNext();
+        }
+        return FavouriteList;
+    }
+
 }

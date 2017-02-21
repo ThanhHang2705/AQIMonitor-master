@@ -4,6 +4,8 @@ package com.example.thanhhang.mnsfimo.FragmentMain;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -16,11 +18,15 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thanhhang.mnsfimo.Activities.Detail;
 import com.example.thanhhang.mnsfimo.Adapters.ListLoveAdapter;
+import com.example.thanhhang.mnsfimo.Data.Database;
+import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.Love;
+import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
 
 import java.util.ArrayList;
@@ -31,20 +37,18 @@ import java.util.ArrayList;
 public class ListmainFragment extends Fragment {
     ListView list;
     ListLoveAdapter adapter;
-    static ArrayList<Love> listLove= new ArrayList<>();
+    private ArrayList<KQNode> listLove;
+//    static ArrayList<Love> listLove= new ArrayList<>();
+    static KQNode kqNode;
     static Love love;
+
     public ListmainFragment() {
         // Required empty public constructor
     }
 
-    @SuppressLint("ValidFragment")
-    public ListmainFragment(Love love) {
-        // Required empty public constructor
-        this.love = love;
-        if(love!=null){
-            listLove.add(love);
-        }
-    }
+
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,14 +56,16 @@ public class ListmainFragment extends Fragment {
 
 
         final View view = inflater.inflate(R.layout.fragment_listmain, null);
-        /*View view =inflater.inflate(R.layout.fragment_listmain, container, false);*/
-        /*listLove.add(new Love("Công viên cầu giấy",90,60,27));*/
-
         list = (ListView) view.findViewById(R.id.listLove);
-        LayoutInflater factory = LayoutInflater.from(getContext());
 
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        UpdateListLove();
+        int size = listLove.size();
+        //list.setAdapter(null);
+        size = list.getCount();
         adapter = new ListLoveAdapter(listLove,getContext());
         list.setAdapter(adapter);
+        size = list.getCount();
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
 
@@ -72,8 +78,8 @@ public class ListmainFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt("PM", love.getAqi());
-                        bundle.putString("Address",love.getDiadiem());
+                        bundle.putInt("PM", Integer.parseInt(kqNode.getPM()));
+                        bundle.putString("Address",kqNode.getNameNode());
                         Intent intent = new Intent(getContext(), Detail.class);
                         intent.putExtra("TapTin", bundle);
                         startActivity(intent);
@@ -82,9 +88,28 @@ public class ListmainFragment extends Fragment {
                 adb.setPositiveButton("Delete", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         view.setVisibility(View.GONE);
+//                        listLove.remove(positionToRemove);
+//                        adapter = new ListLoveAdapter(listLove,getContext());
+//                        list.setAdapter(adapter);
+                        TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_diadiem);
+                        String NameNode = diadiem.getText().toString();
+                        ArrayList<KQNode> temp = ((MainActivity)getActivity()).getDataFromSQLite();
+                        for (int i=0 ;i<temp.size();i++){
+                            String nameNode = temp.get(i).getNameNode();
+                            if(NameNode.equals(nameNode)){
+//                                Toast.makeText(getContext(),temp.get(i).getID(),Toast.LENGTH_LONG).show();
+                                deleteDataInFavourite(temp.get(i).getID());
+                                break;
+                            }
+                        }
                         listLove.remove(positionToRemove);
+                        UpdateListLove();
+                        int size = listLove.size();
                         adapter = new ListLoveAdapter(listLove,getContext());
                         list.setAdapter(adapter);
+
+
+
                     }});
                 adb.show();
 
@@ -92,5 +117,29 @@ public class ListmainFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public ArrayList<KQNode> getListLove(){
+        return listLove;
+    }
+
+    public void UpdateListLove(){
+
+        listLove = ((MainActivity)getActivity()).getFavouriteList();
+    }
+
+    public void UpdateAdapter(){
+        adapter = new ListLoveAdapter(listLove,getContext());
+        list.setAdapter(adapter);
+    }
+
+    public void deleteDataInFavourite(int ID){
+        SQLiteDatabase database = Database.initDatabase(getActivity(),"List_Favourite.sqlite");
+        Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        int size = cursor.getCount();
+        database.delete("Favourite","ID = ?", new String[]{String.valueOf(ID)});
+        cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        size = cursor.getCount();
+        int i = 0;
     }
 }
