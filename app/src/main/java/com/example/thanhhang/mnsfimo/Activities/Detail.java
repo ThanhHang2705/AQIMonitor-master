@@ -38,6 +38,7 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("TapTin");
         if (bundle != null) {
@@ -51,10 +52,6 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
         init(chart1);
         init(chart2);
         init(chart3);
-
-
-
-
 
     }
 
@@ -73,17 +70,17 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
 
 
         XAxis xAxis = chart.getXAxis();
-        xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextColor(Color.BLACK);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
         xAxis.setGranularity(1f); // only intervals of 1 day
         xAxis.setLabelCount(7);
-//        xAxis.setValueFormatter(xAxisFormatter);
+
 
         IAxisValueFormatter custom = new MyAxisValueFormatter();
 
         YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setTextColor(Color.WHITE);
+        leftAxis.setTextColor(Color.BLACK);
         leftAxis.setLabelCount(8, false);
         leftAxis.setValueFormatter(custom);
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
@@ -155,6 +152,5 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     public void onNothingSelected() {
 
     }
-
 
 }

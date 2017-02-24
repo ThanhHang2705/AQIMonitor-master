@@ -40,10 +40,12 @@
             android:textColor="#000"
             android:layout_weight="5"/>
         <ImageView
+            android:id="@+id/imgNotify"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/turn_on"/>
+            android:src="@drawable/turn_off"
+            />
 
     </LinearLayout>
 
@@ -59,10 +61,12 @@
             android:textSize="20sp"
             android:textColor="@android:color/black"/>
         <ImageView
+            android:id="@+id/imgWitget"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/turn_off"/>
+            android:src="@drawable/turn_off"
+           />
 
     </LinearLayout>
 
@@ -78,10 +82,12 @@
             android:textSize="20sp"
             android:textColor="@android:color/black"/>
         <ImageView
+            android:id="@+id/imgAutoLoad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/turn_on"/>
+            android:src="@drawable/turn_off"
+           />
 
     </LinearLayout>
 

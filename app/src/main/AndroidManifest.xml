@@ -33,7 +33,9 @@
         <activity android:name=".Activities.SettingActivity" />
         <activity android:name=".Activities.IntroduceActivity" />
         <activity android:name=".Activities.Detail" >
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity android:name=".Activities.ResultActivity" />
         <activity android:name=".Activities.SplashActivity">
