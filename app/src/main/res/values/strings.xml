@@ -6,13 +6,25 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
-    <string name="country_prompt">Choose a country</string>
+    <string name="pm25">Choose a PM</string>
 
-    <string-array name="country_arrays">
+    <string-array name="pm25">
         <item></item>
-        <item>Cầu giấy</item>
-        <item>Ba Đình</item>
-        <item>Hai Bà Trưng</item>
+        <item>0 - 50</item>
+        <item>51 - 100</item>
+        <item>101 - 150</item>
+        <item>151 - 200</item>
+        <item>201 - 250</item>
+    </string-array>
+
+    <string name="time">Choose a Time</string>
+
+    <string-array name="time">
+        <item></item>
+        <item>1 ngày</item>
+        <item>1 tuần</item>
+        <item>1 tháng</item>
+
     </string-array>
 
     <string name="language_prompt">Choose a language </string>

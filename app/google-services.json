@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "832268745226",
+    "firebase_url": "https://pmmonitor-c2550.firebaseio.com",
+    "project_id": "pmmonitor-c2550",
+    "storage_bucket": "pmmonitor-c2550.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832268745226:android:86a4180eed06c258",
+        "android_client_info": {
+          "package_name": "com.example.thanhhang.mnsfimo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832268745226-sqr0kvv629lhuadatv46ekuv43eud77s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.thanhhang.mnsfimo",
+            "certificate_hash": "3b615d352885120f075ca2b0d2ce4d4a73fc2977"
+          }
+        },
+        {
+          "client_id": "832268745226-8umc2mud9vlc5itgid49i4rvtkecihti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAo_ykXUtEeVBjld7S-xNE9fcTX_Y6ydjU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832268745226-8umc2mud9vlc5itgid49i4rvtkecihti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

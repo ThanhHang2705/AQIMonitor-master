@@ -1,10 +1,12 @@
 package com.example.thanhhang.mnsfimo.FragmentMain;
 
 
+import android.Manifest;
 import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -14,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -65,18 +68,19 @@ public class MapFragment extends Fragment {
     private View myContentsView;
     @SuppressWarnings("unused")
     Marker marker;
-    private  String PM;
+    private String PM;
     MapView mMapView;
     AutoCompleteTextView address;
     public View v;
-    private static String[] COUNTRIES = new String[] {
+    private static String[] COUNTRIES = new String[]{
             "Belgium", "France", "Italy", "Germany", "Spain"
     };
 
     ListView listView;
     ArrayAdapter arrayAdapter;
-    private  static ArrayList<String> COUNTRIES2 ;
+    private static ArrayList<String> COUNTRIES2;
     private ArrayList<KQNode> ListNode;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -99,7 +103,7 @@ public class MapFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("PM", Integer.parseInt(ListNode.get(position).getPM()));
-                bundle.putString("Address",ListNode.get(position).getNameNode());
+                bundle.putString("Address", ListNode.get(position).getNameNode());
                 Intent intent = new Intent(getContext(), Detail.class);
                 intent.putExtra("TapTin", bundle);
                 startActivity(intent);
@@ -112,9 +116,23 @@ public class MapFragment extends Fragment {
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume();
-        mMapView.getMapAsync(new OnMapReadyCallback(){
+        mMapView.getMapAsync(new OnMapReadyCallback() {
             public void onMapReady(GoogleMap googleMap) {
                 map = googleMap;
+                if (ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        || ActivityCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                map.setMyLocationEnabled(true);
                 UpdateListNode();
                 for(int i=0;i<ListNode.size();i++){
                     int PM = Integer.parseInt(ListNode.get(i).getPM());
