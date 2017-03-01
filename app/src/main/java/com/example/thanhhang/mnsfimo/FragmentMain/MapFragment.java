@@ -75,7 +75,7 @@ public class MapFragment extends Fragment {
     private static String[] COUNTRIES = new String[]{
             "Belgium", "France", "Italy", "Germany", "Spain"
     };
-
+    ArrayList<KQNode>listLove;
     ListView listView;
     ArrayAdapter arrayAdapter;
     private static ArrayList<String> COUNTRIES2;
@@ -217,11 +217,35 @@ public class MapFragment extends Fragment {
                                 /*Toast.makeText(getContext(),"follow",Toast.LENGTH_LONG).show();*/
                                 pager.getAdapter().notifyDataSetChanged();
                                 pager.setCurrentItem(1);
+                                UpdateListLove();
+                                if(listLove.size()==0){
+                                    KQNode kqNode = new KQNode(marker.getTitle().toString(), marker.getSnippet(),23,43,marker.getPosition());
+//                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
+                                    InsertDataToFavouriteListSQLite(marker.getTitle().toString());
+
+                                }else{
+                                    String NameNode = marker.getTitle().toString();
+                                    for(int i=0; i<listLove.size();i++){
+                                        String NameNodeToCompare = listLove.get(i).getNameNode();
+                                        if(NameNode.equals(NameNodeToCompare)){
+                                            break;
+                                        }else if(i==listLove.size()-1){
+                                            KQNode kqNode = new KQNode(marker.getTitle().toString(), marker.getSnippet(),23,43,marker.getPosition());
+//                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
+                                            InsertDataToFavouriteListSQLite(marker.getTitle().toString());
+                                            break;
+                                        }
+                                    }
+                                }
+                                ArrayList<Fragment> al = (ArrayList<Fragment>) getFragmentManager().getFragments();
+
+                                Fragment removeFragment = al.get(1);
+                                if(removeFragment != null) {
+                                    getFragmentManager().beginTransaction().remove(removeFragment);
+                                }
                                 FragmentManager FM = getActivity().getSupportFragmentManager();
                                 FragmentTransaction fragmentTransaction = FM.beginTransaction();
-                                KQNode kqNode = new KQNode(marker.getTitle().toString(), marker.getSnippet(),23,43,marker.getPosition());
-//                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
-                                InsertDataToFavouriteListSQLite(marker.getTitle().toString());
+
 
                                 //fragmentTransaction.remove(getFragmentManager().findFragmentById(R.id.fragment_listmain));
                                 //getFragmentManager().executePendingTransactions();
@@ -303,6 +327,10 @@ public class MapFragment extends Fragment {
         }
     }
 
+    public void UpdateListLove(){
+
+        listLove = ((MainActivity)getActivity()).getFavouriteList();
+    }
     //Hàm thêm Node vào trong danh sách yêu thích được lưu ở file List_Favourite.sqlite
     public void InsertDataToFavouriteListSQLite(String NameNode){
         int ID = 0;

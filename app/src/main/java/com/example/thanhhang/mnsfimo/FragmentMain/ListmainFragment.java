@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -107,7 +108,13 @@ public class ListmainFragment extends Fragment {
                         int size = listLove.size();
                         adapter = new ListLoveAdapter(listLove,getContext());
                         list.setAdapter(adapter);
+                        ArrayList<Fragment> al = (ArrayList<Fragment>) getFragmentManager().getFragments();
 
+                        Fragment currentFragment = al.get(1);
+                        FragmentTransaction fragTransaction = getFragmentManager().beginTransaction();
+                        fragTransaction.detach(currentFragment);
+                        fragTransaction.attach(currentFragment);
+                        fragTransaction.commit();
 
 
                     }});
