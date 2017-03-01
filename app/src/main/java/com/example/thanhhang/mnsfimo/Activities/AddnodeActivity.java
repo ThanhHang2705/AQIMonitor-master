@@ -18,6 +18,7 @@ public class AddnodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addnode);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         lv_NewNode = (ListView) findViewById(R.id.lv_NewNode);
         getList(listNewNode);
         adapter = new AddNodeAdapter(listNewNode,this);

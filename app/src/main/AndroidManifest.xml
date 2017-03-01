@@ -30,15 +30,29 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activities.AddnodeActivity" />
-        <activity android:name=".Activities.SettingActivity" />
-        <activity android:name=".Activities.IntroduceActivity" />
+        <activity android:name=".Activities.AddnodeActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".Activities.SettingActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".Activities.IntroduceActivity" >
+
+        </activity>
         <activity android:name=".Activities.Detail" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".Activities.ResultActivity" />
+        <activity android:name=".Activities.ResultActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity android:name=".Activities.SplashActivity">
 
         </activity>

@@ -18,6 +18,7 @@ public class ResultActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_result);
         lv_KQ = (ListView) findViewById(R.id.lv_Kq);
         getListKQ(listKQ);
