@@ -1,7 +1,5 @@
 package com.example.thanhhang.mnsfimo;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -9,25 +7,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.thanhhang.mnsfimo.Activities.AddnodeActivity;
 import com.example.thanhhang.mnsfimo.Activities.IntroduceActivity;
 import com.example.thanhhang.mnsfimo.Activities.SettingActivity;
-import com.example.thanhhang.mnsfimo.Adapters.PagerAdapter;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -55,6 +47,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         // Code viewpager
+        /*
         pager = (ViewPager) findViewById(R.id.view_pager);
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         FragmentManager manager = getSupportFragmentManager();
@@ -63,6 +56,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
+        */
+
 //        getDataFromSQLite();
 //        getFavouriteList();
 
