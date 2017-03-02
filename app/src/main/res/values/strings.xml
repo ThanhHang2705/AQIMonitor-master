@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">PM 2.5 Monitor</string>
-
+    <string name="slogan">Vì một xã hộ truyền cảm hứng </string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -27,5 +27,26 @@
         <item>1 tháng</item>
 
     </string-array>
+
+    <string name="addNode">Thêm Node</string>
+    <string name="Setting">Cài đặt</string>
+    <string name="share">Chia sẻ</string>
+    <string name="help">Trợ giúp và phản hồi</string>
+    <string name="rate">Đánh giá</string>
+    <string name="product">Giới thiệu về sản phẩm </string>
+    <string name="map">BẢN ĐỒ</string>
+    <string name="watchlist">DANH SÁCH THEO DÕI</string>
+    <string name="searchNC">TÌM KIẾM NÂNG CAO</string>
+    <string name="humidity">Độ ẩm</string>
+    <string name="temperature">Nhiệt độ </string>
+    <string name="place">Địa điểm </string>
+    <string name="time1" >Thời gian</string>
+    <string name="search">Tìm</string>
+    <string name="cancel">Hủy</string>
+    <string name="detail">Chi tiết</string>
+    <string name="follow">Theo dõi</string>
+    <string name="shownoti">Hiển thị thông báo</string>
+    <string name="showwidget">Hiển thị ở witget</string>
+    <string name="autodowload">Tự động tải dữ liệu khi có kết nối internet</string>
 
 </resources>
