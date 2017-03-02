@@ -4,6 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+
     <!-- TODO: Remove or change this placeholder text -->
 
     <string name="pm25">Choose a PM</string>
@@ -27,9 +28,4 @@
 
     </string-array>
 
-    <string name="language_prompt">Choose a language </string>
-    <string-array name="language_array">
-        <item>Tiếng Việt </item>
-        <item>Tiếng Anh</item>
-    </string-array>
 </resources>
