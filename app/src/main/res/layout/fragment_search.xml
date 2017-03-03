@@ -66,7 +66,7 @@
                     android:layout_height="match_parent"
                     android:entries="@array/pm25"
                     android:prompt="@string/pm25"
-                    android:id="@+id/spinner6" />
+                    android:id="@+id/choose_pm" />
 
 
 
@@ -105,25 +105,13 @@
                     android:layout_weight="1"
                 />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
 
-                    android:layout_marginTop="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:max="30"
+
                     android:id="@+id/temperature"
-                    app:min_value="0"
-                    app:max_value="50"
-                    app:bar_color="#5cde69"
-                    app:bar_highlight_color="#5d8fc68d"
-                    app:left_thumb_color="#419442"
-                    app:right_thumb_color="#419442"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"
-                    android:scrollbarSize="1dp"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -185,23 +173,16 @@
                     android:layout_weight="1"
                     />
 
-                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
 
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:max="30"
+
+
                     android:id="@+id/humidity"
-                    app:min_value="0"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    app:max_value="100"
-                    app:bar_color="#5cde69"
-                    app:bar_highlight_color="#5d8fc68d"
-                    app:left_thumb_color="#419442"
-                    app:right_thumb_color="#419442"
-                    app:left_thumb_color_pressed="@color/colorPrimary"
-                    app:right_thumb_color_pressed="@color/colorPrimary"/>
+
+                     />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -261,6 +242,7 @@
                     android:layout_height="match_parent"
                     android:entries="@array/time"
                     android:prompt="@string/time"
+                    android:id="@+id/choose_time"
                     />
 
             </LinearLayout>

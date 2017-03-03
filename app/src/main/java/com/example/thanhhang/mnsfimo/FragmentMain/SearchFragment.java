@@ -148,6 +148,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
                 temperature_min.setText("0");
                 temperature_max.setText("50");
                 temperature.resetSelectedValues();
+                humidity.resetSelectedValues();
                 humidity.setRight(100);
             }
         });
