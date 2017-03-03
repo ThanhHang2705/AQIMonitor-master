@@ -21,6 +21,7 @@ public class KQuaAdapter extends BaseAdapter {
     TextView txt_nameNode;
     TextView  txt_address;
     TextView txt_PM;
+    TextView txt_temp,txt_hum, txt_latlag;
     ArrayList<KQNode> list = new ArrayList<>();
     LayoutInflater inflater;
 
@@ -53,12 +54,18 @@ public class KQuaAdapter extends BaseAdapter {
         txt_nameNode = (TextView) convertView.findViewById(R.id.txt_nameNode);
         txt_address= (TextView) convertView.findViewById(R.id.txt_address);
         txt_PM = (TextView) convertView.findViewById(R.id.txt_pm);
+        txt_temp = (TextView) convertView.findViewById(R.id.txt_temp);
+        txt_hum = (TextView) convertView.findViewById(R.id.txt_hum);
+        txt_latlag = (TextView) convertView.findViewById(R.id.txt_latlng);
         //gán giá trị
         KQNode kq = list.get(position);
-        txt_id.setText(kq.getID()+"");
-        txt_nameNode.setText(kq.getNameNode());
-        txt_address.setText(kq.getAddress());
-        txt_PM.setText(kq.getPM());
+        txt_id.setText("Ket qua : "+ kq.getID());
+        txt_nameNode.setText("Ten Node: " +kq.getNameNode());
+        txt_address.setText("Dia chi:" +kq.getAddress());
+        txt_PM.setText("PM 2.5 : " + kq.getPM());
+        txt_temp.setText("Temp: " + kq.getTemperature());
+        txt_hum.setText("Hum: "+ kq.getHumidity());
+        txt_latlag.setText("LatLng: "+ kq.getLatLng());
 
         return convertView;
     }

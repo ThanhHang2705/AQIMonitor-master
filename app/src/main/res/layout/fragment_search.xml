@@ -8,75 +8,58 @@
     tools:context="com.example.thanhhang.mnsfimo.FragmentMain.SearchFragment">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal">
             <TextView
+                android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/place"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="#000"
-                android:layout_weight="2"/>
-            <LinearLayout
-                android:layout_width="120dp"
+                android:layout_weight="1"/>
+
+            <EditText
+                android:background="@drawable/selector_frame"
+                android:hint="@string/place"
+                android:layout_width="0dp"
                 android:layout_weight="3"
-
-                android:layout_height="60dp">
-                <!--<Spinner-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:entries="@array/country_arrays"-->
-                    <!--android:prompt="@string/country_prompt"-->
-                    <!--/>-->
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/search_address"/>
+                android:layout_height="match_parent"
+                android:id="@+id/search_address"/>
 
 
-            </LinearLayout>
         </LinearLayout>
-
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/result_4_search_address">
-
-        </ListView>
 
 
         <LinearLayout
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
+                android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="PM 2.5"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="#000"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:id="@+id/textView7" />
 
             <LinearLayout
-                android:layout_width="120dp"
+                android:layout_width="0dp"
                 android:layout_weight="3"
                 android:background="@drawable/selector_frame"
-                android:layout_height="60dp">
+                android:layout_height="match_parent">
 
                 <Spinner
                     android:layout_width="match_parent"
@@ -91,112 +74,159 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/temperature_min"
-                android:text="0"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:paddingLeft="40dp"
-                android:layout_weight="0"/>
-
-            <TextView
-                android:text="50"
-                android:id="@+id/temperature_max"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:paddingLeft="150dp"
-                android:layout_marginRight="10dp"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal">
+
             <TextView
+                android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/temperature"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="#000"
-                android:layout_weight="2"/>
+                android:layout_weight="1"
+                android:id="@+id/textView9" />
 
-
-            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
-
-                android:layout_marginTop="20dp"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
+            <LinearLayout
                 android:layout_weight="3"
-                android:max="30"
-                android:id="@+id/temperature"
-                app:min_value="0"
-                app:max_value="50"/>
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:max="30"
+                    android:id="@+id/temperature"
+                    app:min_value="0"
+                    app:max_value="50"
+                    app:bar_color="#5cde69"
+                    app:bar_highlight_color="#5d8fc68d"
+                    app:left_thumb_color="#419442"
+                    app:right_thumb_color="#419442"
+                    app:left_thumb_color_pressed="@color/colorPrimary"
+                    app:right_thumb_color_pressed="@color/colorPrimary"
+                    android:scrollbarSize="1dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/temperature_min"
+                        android:text="0"
+                        android:textColor="#419442"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        />
+
+                    <TextView
+                        android:text="50"
+                        android:textColor="#419442"
+                        android:id="@+id/temperature_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                      />
+                </RelativeLayout>
+
+
+            </LinearLayout>
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="0"
-                android:id="@+id/humidity_min"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="60dp"
-                android:paddingLeft="40dp"
-                android:layout_weight="0"/>
-
-            <TextView
-                android:text="100"
-                android:id="@+id/humidity_max"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:paddingLeft="150dp"
-                android:layout_marginRight="10dp"/>
-        </LinearLayout>
 
         <LinearLayout
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
+                android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/humidity"
                 android:layout_marginTop="10dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="#000"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:id="@+id/textView2" />
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
 
-            <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+
+                <com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar
+
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:max="30"
+                    android:id="@+id/humidity"
+                    app:min_value="0"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:max_value="100"
+                    app:bar_color="#5cde69"
+                    app:bar_highlight_color="#5d8fc68d"
+                    app:left_thumb_color="#419442"
+                    app:right_thumb_color="#419442"
+                    app:left_thumb_color_pressed="@color/colorPrimary"
+                    app:right_thumb_color_pressed="@color/colorPrimary"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1">
+                    <TextView
+                        android:text="0"
+                        android:textColor="#419442"
+                        android:id="@+id/humidity_min"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        />
+
+                    <TextView
+                        android:text="100"
+                        android:textColor="#419442"
+                        android:id="@+id/humidity_max"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"/>
+                </RelativeLayout>
 
 
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_weight="3.00"
-                android:max="30"
-                android:id="@+id/humidity"
-                app:min_value="0"
-                app:max_value="100"/>
-
+            </LinearLayout>
 
 
         </LinearLayout>
@@ -207,24 +237,25 @@
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.5"
+            android:layout_weight="1"
             android:orientation="horizontal">
 
             <TextView
+                android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/time1"
                 android:layout_marginTop="20dp"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 android:textColor="#000"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:id="@+id/textView8" />
 
             <LinearLayout
-                android:layout_width="120dp"
+                android:layout_width="0dp"
                 android:layout_weight="3"
                 android:background="@drawable/selector_frame"
-                android:layout_height="60dp">
+                android:layout_height="match_parent">
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -238,7 +269,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.51"
+            android:layout_weight="1"
             >
             <View
                 android:layout_width="0dp"
@@ -252,9 +283,11 @@
                 android:text="@string/cancel"
                 android:layout_marginLeft="5dp"
                 android:textSize="15sp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:background="@drawable/selector_list"/>
 
             <Button
+                android:background="@drawable/selector_list"
                 android:id="@+id/btx_timNangCao"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
@@ -265,4 +298,4 @@
 
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+

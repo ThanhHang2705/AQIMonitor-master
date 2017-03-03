@@ -35,6 +35,16 @@ public class KQNode {
         this.latLng = latLng;
     }
 
+    public KQNode(int ID, String nameNode, String address, String PM, int humidity, int temperature, LatLng latLng) {
+        this.ID = ID;
+        this.nameNode = nameNode;
+        this.address = address;
+        this.PM = PM;
+        Humidity = humidity;
+        Temperature = temperature;
+        this.latLng = latLng;
+    }
+
     public int getID() {
         return ID;
     }

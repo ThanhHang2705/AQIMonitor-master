@@ -145,12 +145,10 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
-
     }
 
     @Override
     public void onNothingSelected() {
-
     }
 
 }
