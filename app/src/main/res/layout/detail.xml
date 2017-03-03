@@ -17,7 +17,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:text="Địa Điểm"
+                android:text="@string/place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="40dp"
@@ -40,7 +40,7 @@
                 </com.github.mikephil.charting.charts.BarChart>
 
             <TextView
-                android:text="Nhiệt độ"
+                android:text="@string/temperature"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView4" />
@@ -53,7 +53,7 @@
 
                 </com.github.mikephil.charting.charts.BarChart>
             <TextView
-                android:text="Độ Ẩm"
+                android:text="@string/humidity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/textView5" />

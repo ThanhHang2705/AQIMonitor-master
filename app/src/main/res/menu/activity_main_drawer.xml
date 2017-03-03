@@ -6,11 +6,11 @@
         <item
             android:id="@+id/nav_addNode"
             android:icon="@drawable/ic_menu_add"
-            android:title="Thêm Node" />
+            android:title="@string/addNode" />
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_menu_setting"
-            android:title="Cài đặt" />
+            android:title="@string/Setting" />
 
     </group>
 
@@ -19,20 +19,20 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Chia sẻ" />
+                android:title="@string/share" />
             <item
                 android:id="@+id/nav_Feedback"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Trợ giúp và phản hồi" />
+                android:title="@string/help" />
             <item
                 android:id="@+id/nav_rate"
                 android:icon="@drawable/ic_menu_favorite"
-                android:title="Đánh gía" />
+                android:title="@string/rate" />
 
             <item
                 android:id="@+id/nav_introduce"
                 android:icon="@drawable/ic_menu_gallery"
-                android:title="Giới thiệu về sản phẩm" />
+                android:title="@string/product" />
         </menu>
     </item>
 

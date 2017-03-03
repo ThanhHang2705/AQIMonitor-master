@@ -30,7 +30,7 @@
             android:layout_alignParentEnd="true" />
 
         <Button
-            android:text="Chi tiêt"
+            android:text="@string/detail"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:textSize="12dp"
@@ -44,7 +44,7 @@
             android:layout_alignParentStart="true" />
 
         <Button
-            android:text="Theo dõi"
+            android:text="@string/follow"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:textSize="12dp"

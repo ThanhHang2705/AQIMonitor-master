@@ -4,17 +4,13 @@ package com.example.thanhhang.mnsfimo.Adapters;
  * Created by ThanhHang on 12/2/2016.
  */
 
-import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.example.thanhhang.mnsfimo.FragmentMain.ListmainFragment;
 import com.example.thanhhang.mnsfimo.FragmentMain.MapFragment;
 import com.example.thanhhang.mnsfimo.FragmentMain.SearchFragment;
-import com.example.thanhhang.mnsfimo.R;
 
 
 public class PagerAdapter  extends FragmentStatePagerAdapter {
@@ -26,7 +22,6 @@ public class PagerAdapter  extends FragmentStatePagerAdapter {
     imm.showSoftInput(address, InputMethodManager.SHOW_IMPLICIT);*/
     @Override
     public Fragment getItem(int position) {
-
         Fragment frag=null;
         switch (position){
 
@@ -52,13 +47,13 @@ public class PagerAdapter  extends FragmentStatePagerAdapter {
         switch (position){
 
             case 0:
-                title="Map";
+                title="MAP";
                 break;
             case 1:
-                title="FAVOURITE";
+                title="WATCHLIST";
                 break;
             case 2:
-                title="Search";
+                title="ADV SEARCH";
                 break;
         }
 
