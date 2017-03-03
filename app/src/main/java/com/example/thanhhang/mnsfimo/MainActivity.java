@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -23,12 +24,15 @@ import com.example.thanhhang.mnsfimo.Activities.IntroduceActivity;
 import com.example.thanhhang.mnsfimo.Activities.SettingActivity;
 import com.example.thanhhang.mnsfimo.Adapters.PagerAdapter;
 import com.example.thanhhang.mnsfimo.Data.Database;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener  {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
     public ViewPager pager;
     public TabLayout tabLayout;
     private static String[] COUNTRIES = new String[] {
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     SQLiteDatabase database;
     private static ArrayList<KQNode> DataFromSQLite;
     private static ArrayList<KQNode> FavouriteList;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +52,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
         // Code viewpager
 
         pager = (ViewPager) findViewById(R.id.view_pager);
@@ -167,4 +177,8 @@ public class MainActivity extends AppCompatActivity
         return FavouriteList;
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "Conect Failed", Toast.LENGTH_LONG).show();
+    }
 }
