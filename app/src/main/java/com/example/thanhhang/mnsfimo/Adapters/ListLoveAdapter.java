@@ -51,7 +51,7 @@ public class ListLoveAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.item_listlove,null);
         }
         txt_diadiem = (TextView) view.findViewById(R.id.txt_diadiem);
-        txt_aqi = (TextView) view.findViewById(R.id.txt_AQI);
+        txt_aqi = (TextView) view.findViewById(R.id.txt_pm);
         txt_doAm = (TextView) view.findViewById(R.id.txt_DoAm);
         txt_nhietDo = (TextView) view.findViewById(R.id.txt_nhietDo);
 

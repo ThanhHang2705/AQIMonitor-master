@@ -79,8 +79,13 @@ public class ListmainFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt("PM", Integer.parseInt(kqNode.getPM()));
-                        bundle.putString("Address",kqNode.getNameNode());
+                        TextView PM = (TextView) list.getChildAt(position).findViewById(R.id.txt_pm);
+                        String pm = PM.getText().toString();
+                        int pm_int = Integer.parseInt(pm);
+                        bundle.putInt("PM", Integer.parseInt(pm));
+                        TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_diadiem);
+                        String NameNode = diadiem.getText().toString();
+                        bundle.putString("Address",NameNode);
                         Intent intent = new Intent(getContext(), Detail.class);
                         intent.putExtra("TapTin", bundle);
                         startActivity(intent);
