@@ -90,6 +90,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
         choose_time = (Spinner)view.findViewById(R.id.choose_time);
 
         temperature.setRangeValues(0,50);
+
         humidity.setRangeValues(0,100);
         temperature.setColorFilter(Color.BLACK);
 

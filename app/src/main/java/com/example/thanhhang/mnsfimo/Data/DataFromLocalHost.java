@@ -43,7 +43,8 @@ public class DataFromLocalHost extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new docJSON().execute("http://192.168.100.4:8080/PM_Monitor/result.php");
+//                new docJSON().execute("http://192.168.100.6:8080/PM_Monitor/result.php");
+                new docJSON().execute("http://api.waqi.info/feed/hanoi/?token=1b4e3291a2257461524a84a5b6e7b7097f2203fa");
             }
         });
 
@@ -60,6 +61,7 @@ public class DataFromLocalHost extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             Toast.makeText(DataFromLocalHost.this,s,Toast.LENGTH_LONG).show();
+            tv.setText(s);
         }
     }
     private static String docNoiDung_Tu_URL(String theUrl)
