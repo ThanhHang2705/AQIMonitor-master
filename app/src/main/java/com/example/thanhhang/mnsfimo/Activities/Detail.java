@@ -1,10 +1,10 @@
 package com.example.thanhhang.mnsfimo.Activities;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.R;
 import com.example.thanhhang.mnsfimo.customdata.MyAxisValueFormatter;
 import com.example.thanhhang.mnsfimo.customdata.TimeAxisValueFormatter;
@@ -24,6 +24,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by HP on 1/15/2017.
@@ -33,25 +34,55 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     static int PM;
     String Address;
     private BarChart chart1, chart2, chart3;
-
+    ArrayList<Long> Temperature, PM25, Humidity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("TapTin");
-        if (bundle != null) {
-            PM = bundle.getInt("PM");
-            Address = bundle.getString("Address");
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                DataFromLocalHost dataFromLocalHost = new DataFromLocalHost();
+                dataFromLocalHost.execute();
+                ArrayList<Long> AllData = new ArrayList<>();
+                try {
+                    AllData = dataFromLocalHost.get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                Temperature = new ArrayList<Long>();
+                PM25 = new ArrayList<Long>();
+                Humidity = new ArrayList<Long>();
 
-        chart1 = (BarChart) findViewById(R.id.bar_graph1);
-        chart2 = (BarChart) findViewById(R.id.bar_graph2);
-        chart3 = (BarChart) findViewById(R.id.bar_graph3);
-        init(chart1);
-        init(chart2);
-        init(chart3);
+                // Toàn bộ dữ liệu sau khi load về được để ở đây
+                for (int i =0; i<AllData.size();i++){
+                    if(i<20){
+                        Temperature.add(AllData.get(i));
+                    }else if (i>=20 && i<40){
+                        PM25.add(AllData.get(i));
+                    }else{
+                        Humidity.add(AllData.get(i));
+                    }
+                }
+//                Toast.makeText(Detail.this, s, Toast.LENGTH_LONG).show();
+            }
+        });
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getBundleExtra("TapTin");
+//        if (bundle != null) {
+//            PM = bundle.getInt("PM");
+//            Address = bundle.getString("Address");
+//        }
+//
+//        chart1 = (BarChart) findViewById(R.id.bar_graph1);
+//        chart2 = (BarChart) findViewById(R.id.bar_graph2);
+//        chart3 = (BarChart) findViewById(R.id.bar_graph3);
+//        init(chart1);
+//        init(chart2);
+//        init(chart3);
 
     }
 

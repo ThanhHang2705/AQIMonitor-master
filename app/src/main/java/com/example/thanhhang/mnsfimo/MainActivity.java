@@ -69,7 +69,8 @@ public class MainActivity extends AppCompatActivity
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
 
-
+        CreateTable();
+        showTable();
 //        getDataFromSQLite();
 //        getFavouriteList();
 
@@ -177,6 +178,30 @@ public class MainActivity extends AppCompatActivity
         return FavouriteList;
     }
 
+    public void CreateTable(){
+
+        SQLiteDatabase database = Database.initDatabase(this, "pm_monitor.sqlite");
+        database.execSQL("CREATE TABLE IF NOT EXISTS COMPANY(\n" +
+                "   ID INT PRIMARY KEY     NOT NULL,\n" +
+                "   NAME           TEXT    NOT NULL,\n" +
+                "   AGE            INT     NOT NULL,\n" +
+                "   ADDRESS        CHAR(50),\n" +
+                "   SALARY         REAL\n" +
+                ");");
+    }
+
+
+    public void showTable(){
+        SQLiteDatabase db = Database.initDatabase(this, "pm_monitor.sqlite");
+        Cursor c = db.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
+
+        if (c.moveToFirst()) {
+            while ( !c.isAfterLast() ) {
+                Toast.makeText(MainActivity.this, "Table Name=> "+c.getString(0), Toast.LENGTH_LONG).show();
+                c.moveToNext();
+            }
+        }
+    }
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "Conect Failed", Toast.LENGTH_LONG).show();
