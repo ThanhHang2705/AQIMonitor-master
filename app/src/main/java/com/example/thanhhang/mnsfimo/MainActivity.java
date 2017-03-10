@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
 
-        CreateTable();
-        showTable();
+//        CreateTable();
+//        showTable();
 //        getDataFromSQLite();
 //        getFavouriteList();
 
@@ -132,8 +132,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public ArrayList<KQNode> getDataFromSQLite(){
-        database = Database.initDatabase(this, "pm_monitor.sqlite");
-        Cursor cursor = database.rawQuery("SELECT * FROM Data_Demo", null);
+        database = Database.initDatabase(this, "FeatureOfInterest.sqlite");
+        Cursor cursor = database.rawQuery("SELECT * FROM Data", null);
         cursor.moveToFirst();
         DataFromSQLite = new ArrayList();
         for(int i=0;i<cursor.getCount();i++){

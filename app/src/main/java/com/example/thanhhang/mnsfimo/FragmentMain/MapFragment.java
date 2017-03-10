@@ -2,9 +2,7 @@ package com.example.thanhhang.mnsfimo.FragmentMain;
 
 
 import android.Manifest;
-import android.app.SearchManager;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -20,7 +18,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
@@ -39,11 +36,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.thanhhang.mnsfimo.Activities.Detail;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
-import com.example.thanhhang.mnsfimo.Love;
 import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -51,7 +46,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -198,11 +192,11 @@ public class MapFragment extends Fragment {
                             public void onClick(View v) {
                                 Toast.makeText(getContext(),"detail",Toast.LENGTH_LONG).show();
 
-                                Bundle bundle = new Bundle();
-                                bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
-                                bundle.putString("Address", marker.getTitle());
+//                                Bundle bundle = new Bundle();
+//                                bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
+//                                bundle.putString("Address", marker.getTitle());
                                 Intent intent = new Intent(getContext(),Detail.class);
-                                intent.putExtra("TapTin", bundle);
+//                                intent.putExtra("TapTin", bundle);
                                 startActivity(intent);
                             }
                         });
