@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:rsb="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
     tools:context="com.example.thanhhang.mnsfimo.FragmentMain.SearchFragment">
@@ -84,7 +85,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/temperature"
@@ -94,57 +95,15 @@
                 android:layout_weight="1"
                 android:id="@+id/textView9" />
 
-            <LinearLayout
-                android:layout_weight="3"
-                android:orientation="vertical"
+
+            <com.example.thanhhang.mnsfimo.Activities.RangeSeekBar
+                android:id="@+id/temperature"
                 android:layout_width="0dp"
-                android:layout_height="match_parent">
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                />
-
-                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
-
-
-                    android:id="@+id/temperature"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    
-                    />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-
-                    <TextView
-                        android:id="@+id/temperature_min"
-                        android:text="0"
-                        android:textColor="#419442"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        />
-
-                    <TextView
-                        android:text="50"
-                        android:textColor="#419442"
-                        android:id="@+id/temperature_max"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                      />
-                </RelativeLayout>
-
-
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_weight="3" />
 
 
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_margin="5dp"
@@ -163,54 +122,14 @@
                 android:textColor="#000"
                 android:layout_weight="1"
                 android:id="@+id/textView2" />
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_weight="3"
-                android:layout_width="0dp"
-                android:layout_height="match_parent">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    />
+                <com.example.thanhhang.mnsfimo.Activities.RangeSeekBar
 
-                <com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar
-
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
-
-
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
                     android:id="@+id/humidity"
-
                      />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1">
-                    <TextView
-                        android:text="0"
-                        android:textColor="#419442"
-                        android:id="@+id/humidity_min"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        />
-
-                    <TextView
-                        android:text="100"
-                        android:textColor="#419442"
-                        android:id="@+id/humidity_max"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"/>
-                </RelativeLayout>
-
-
-            </LinearLayout>
-
 
         </LinearLayout>
 
@@ -279,7 +198,5 @@
                 android:textSize="15sp"
                 android:layout_weight="1"/>
 
-
         </LinearLayout>
     </LinearLayout>
-

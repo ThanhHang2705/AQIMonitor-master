@@ -26,13 +26,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarChangeListener;
-import com.crystal.crystalrangeseekbar.interfaces.OnRangeSeekbarFinalValueListener;
-import com.crystal.crystalrangeseekbar.widgets.CrystalRangeSeekbar;
-import com.crystal.crystalrangeseekbar.widgets.CrystalSeekbar;
+import com.example.thanhhang.mnsfimo.Activities.RangeSeekBar;
 import com.example.thanhhang.mnsfimo.Activities.ResultActivity;
 import com.example.thanhhang.mnsfimo.R;
 import com.google.android.gms.common.ConnectionResult;
@@ -43,13 +38,11 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.yahoo.mobile.client.android.util.rangeseekbar.RangeSeekBar;
+
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static com.google.android.gms.wearable.DataMap.TAG;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,8 +51,8 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
     private GoogleApiClient mGoogleApiClient;
     Button btx_timNangCao, btx_reset;
     //CrystalRangeSeekbar  humidity;
-    RangeSeekBar<Integer> temperature, humidity;
-    TextView temperature_min, temperature_max, humidity_min, humidity_max;
+    RangeSeekBar<Integer>  humidity,temperature;
+
     Spinner choose_pm,choose_time;
     private Drawable thumb;
     public SearchFragment() {
@@ -82,24 +75,20 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
         btx_reset = (Button) view.findViewById(R.id.btx_reset);
         temperature = (RangeSeekBar<Integer>) view.findViewById(R.id.temperature);
         humidity = (RangeSeekBar<Integer>) view.findViewById(R.id.humidity);
-        temperature_min = (TextView)view.findViewById(R.id.temperature_min);
-        temperature_max = (TextView)view.findViewById(R.id.temperature_max);
-        humidity_min = (TextView)view.findViewById(R.id.humidity_min);
-        humidity_max = (TextView)view.findViewById(R.id.humidity_max);
+
         choose_pm = (Spinner)view.findViewById(R.id.choose_pm);
         choose_time = (Spinner)view.findViewById(R.id.choose_time);
-
         temperature.setRangeValues(0,50);
-
         humidity.setRangeValues(0,100);
         temperature.setColorFilter(Color.BLACK);
 
 
+
+
         temperature.setOnRangeSeekBarChangeListener(new RangeSeekBar.OnRangeSeekBarChangeListener<Integer>() {
             @Override
-            public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
-                temperature_min.setText(String.valueOf(minValue));
-                temperature_max.setText(String.valueOf(maxValue));
+                public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
+
             }
         });
 
@@ -144,10 +133,6 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
                 Address.setText("");
                 choose_time.setSelection(0);
                 choose_pm.setSelection(0);
-                humidity_min.setText("0");
-                humidity_max.setText("100");
-                temperature_min.setText("0");
-                temperature_max.setText("50");
                 temperature.resetSelectedValues();
                 humidity.resetSelectedValues();
                 humidity.setRight(100);
@@ -214,4 +199,5 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
             }
         }
     }
+
 }

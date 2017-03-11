@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
                 while(status<100) {
                     try {
                         status +=10;
-                        Thread.sleep(00);
+                        Thread.sleep(1000);
                         progressBar.setProgress(status);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -45,4 +45,3 @@ public class SplashActivity extends AppCompatActivity {
         myThread.start();
     }
     }
-
