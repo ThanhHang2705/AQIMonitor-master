@@ -164,9 +164,9 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
 
         ArrayList<BarEntry> yVals1 = new ArrayList<BarEntry>();
 
-        for (int i = 0; i < count ; i++) {
+        for (int i = 0; i < Data.size() ; i++) {
 //            float mult = (range + 1);
-            float val = (float) Data.get(i);
+            float val = Float.parseFloat(Data.get(i).toString());
             yVals1.add(new BarEntry(i+1, val));
         }
 

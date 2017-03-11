@@ -85,22 +85,24 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
 
                 double subtract_curTime_resultTime = (Time.getTime()- FormatResultTime(ResultTime).getTime())/3600000;
                 int RoundSubtract = (int) Math.round(subtract_curTime_resultTime);
-                String observableProperty = Observations.getJSONObject(i).getString("observableProperty");
-                if(observableProperty.equals("temperature")){
-                    JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                    String temperature = result.getString("value");
-                    Temperature.set(24-RoundSubtract-1,Math.round(Double.parseDouble(temperature)));
+                if((24-RoundSubtract)>=0){
+                    String observableProperty = Observations.getJSONObject(i).getString("observableProperty");
+                    if(observableProperty.equals("temperature")){
+                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                        String temperature = result.getString("value");
+                        Temperature.set(24-RoundSubtract,Math.round(Double.parseDouble(temperature)));
 //                    Temperature.add(24-RoundSubtract-1, Math.round(Double.parseDouble(temperature)));
-                } else if(observableProperty.equals("Humidity")){
-                    JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                    String humidity = result.getString("value");
-                    Humidity.set(24-RoundSubtract-1,Math.round(Double.parseDouble(humidity)));
-                } else if(observableProperty.equals("PM2.5")){
-                    JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                    String pm25 = result.getString("value");
-                    PM25.set(24-RoundSubtract-1,Math.round(Double.parseDouble(pm25)));
-                }
+                    } else if(observableProperty.equals("Humidity")){
+                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                        String humidity = result.getString("value");
+                        Humidity.set(24-RoundSubtract,Math.round(Double.parseDouble(humidity)));
+                    } else if(observableProperty.equals("PM2.5")){
+                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                        String pm25 = result.getString("value");
+                        PM25.set(24-RoundSubtract,Math.round(Double.parseDouble(pm25)));
+                    }
 //
+                }
             }
 
             for (int i =0;i<24;i++){
@@ -134,6 +136,13 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
 
             @Override
             public void run() {
+                long milliSeconds = Time.getTime() - 24*3600*1000;
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(milliSeconds);
+                Date date = new Date(milliSeconds);
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+                String current_time = FormatTime(Time);
+                String before_time = FormatTime(date);
                 Looper.prepare(); //For Preparing Message Pool for the childThread
                 HttpClient client = new DefaultHttpClient();
                 HttpConnectionParams.setConnectionTimeout(client.getParams(), 2000); //Timeout Limit
@@ -141,13 +150,6 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
 //                JSONObject json = new JSONObject();
 
                 try {
-                    long milliSeconds = Time.getTime() - 24*3600*1000;
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTimeInMillis(milliSeconds);
-                    Date date = new Date(milliSeconds);
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
-                    String current_time = FormatTime(Time);
-                    String before_time = FormatTime(date);
 
 
                     HttpPost post = new HttpPost("http://118.70.72.15:8080/sos-bundle/service");
@@ -173,7 +175,7 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
                     se.setContentType(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
                     post.setEntity(se);
                     response = client.execute(post);
-
+                    response.toString();
                 /*Checking response */
                     if (response != null) {
                         InputStream in = response.getEntity().getContent(); //Get the data in the entity
