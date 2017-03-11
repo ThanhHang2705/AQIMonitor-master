@@ -24,7 +24,6 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Created by HP on 1/15/2017.
@@ -34,75 +33,51 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     static int PM;
     String Address;
     private BarChart chart1, chart2, chart3;
-    ArrayList<Long> Temperature, PM25, Humidity, AllData;
+    ArrayList<Long> Temperature, PM25, Humidity;
+    String AllData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
+
                 DataFromLocalHost dataFromLocalHost = new DataFromLocalHost();
-                dataFromLocalHost.execute();
-                AllData = new ArrayList<>();
-                try {
-                    AllData = dataFromLocalHost.get();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
+                Intent intent = getIntent();
+                Bundle bundle = intent.getBundleExtra("TapTin");
+                if (bundle != null) {
+//                    PM = bundle.getInt("PM");
+//                    Address = bundle.getString("Address");
+                    AllData = bundle.getString("AllData");
                 }
-//                AllData = dataFromLocalHost.getAllData();
-                while(AllData==null){
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    AllData = dataFromLocalHost.getAllData();
-                }
+//
 
 
-                Temperature = new ArrayList<Long>();
-                PM25 = new ArrayList<Long>();
-                Humidity = new ArrayList<Long>();
 
-                // Toàn bộ dữ liệu sau khi load về được để ở đây
-                for (int i =0; i<AllData.size();i++){
-                    if(i<24){
-                        long a = AllData.get(i);
-                        PM25.add(AllData.get(i));
-                    }else if (i>=24 && i<49){
-                        Temperature.add(AllData.get(i));
-                    }else if(i>=48){
-                        Humidity.add(AllData.get(i));
-                    }
-                }
-//                Toast.makeText(Detail.this, s, Toast.LENGTH_LONG).show();
-            }
-        });
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("TapTin");
-        if (bundle != null) {
-            PM = bundle.getInt("PM");
-            Address = bundle.getString("Address");
-        }
+                Temperature = new ArrayList<>();
+                PM25 = new ArrayList<>();
+                Humidity = new ArrayList<>();
+                int size ;
+
+                dataFromLocalHost.ParseJsonData(AllData,PM25,Temperature,Humidity);
+                size = PM25.size();
+//
+//
+
 
         chart1 = (BarChart) findViewById(R.id.bar_graph1);
         chart2 = (BarChart) findViewById(R.id.bar_graph2);
         chart3 = (BarChart) findViewById(R.id.bar_graph3);
-        init(chart1, PM25,setColorForPM(PM25));
+        init(chart1, PM25,setColorForPM(PM25),"PM 2.5");
         ArrayList<Integer>color_temperature = new ArrayList<>();
         ArrayList<Integer>color_humidity = new ArrayList<>();
         color_temperature.add(Color.parseColor("#CDDC39"));
-        init(chart2, Temperature,color_temperature);
+        init(chart2, Temperature,color_temperature, "Temperature");
         color_humidity.add(Color.parseColor("#0091EA"));
-        init(chart3, Humidity, color_humidity);
+        init(chart3, Humidity, color_humidity,"Humidity");
 
     }
 
-    private void init(BarChart chart, ArrayList<Long> Data, ArrayList<Integer>color) {
+    private void init(BarChart chart, ArrayList<Long> Data, ArrayList<Integer>color, String type) {
         chart.setOnChartValueSelectedListener(this);
         chart.setDrawBarShadow(false);
         chart.setDrawValueAboveBar(true);
@@ -151,7 +126,7 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
         l.setXEntrySpace(4f);
         l.setEnabled(false);
 
-        XYMarkerView mv = new XYMarkerView(getApplicationContext(), xAxisFormatter);
+        XYMarkerView mv = new XYMarkerView(getApplicationContext(), xAxisFormatter, type);
         mv.setChartView(chart); // For bounds control
         chart.setMarker(mv); // Set the marker to the chart
 
@@ -220,5 +195,7 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     @Override
     public void onNothingSelected() {
     }
+
+
 
 }

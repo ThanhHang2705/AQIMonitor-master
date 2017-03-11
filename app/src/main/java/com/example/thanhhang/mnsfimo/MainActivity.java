@@ -1,8 +1,11 @@
 package com.example.thanhhang.mnsfimo;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -84,6 +87,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        if (isConnected()) {
+            Toast.makeText(MainActivity.this,"You are conncted",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(MainActivity.this,"You are NOT conncted",Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -205,5 +213,14 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(this, "Conect Failed", Toast.LENGTH_LONG).show();
+    }
+
+    public boolean isConnected(){
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected())
+            return true;
+        else
+            return false;
     }
 }

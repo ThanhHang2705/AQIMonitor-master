@@ -25,105 +25,49 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long>>{
+public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
 
     public String Data = "";
-    String result;
+    String result, current_time, before_time;
     Date Time;
-    public DataFromLocalHost(){
+
+    ArrayList<Long> Temperature, PM25, Humidity,  AllData;
+
+    @Override
+    protected String doInBackground(String... params) {
+        int time = 100;
+        getsData();
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
-//        String time = "2017-03-09T23:00:00.000Z";
-//        String formattedDate1 = FormatTime(time);
+//
         try {
             Time = df.parse(df.format(c.getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        long milliSeconds = Time.getTime() - 24*3600*1000;
+
+        c.setTimeInMillis(milliSeconds);
+        Date date = new Date(milliSeconds);
+        current_time = FormatTime(Time);
+        before_time = FormatTime(date);
+        while(Data==""){
+            try {
 //
+                Thread.sleep(time);
+                time+=100;
 
-    }
-    ArrayList<Long> Temperature, PM25, Humidity,  AllData;
-
-    @Override
-    protected ArrayList<Long> doInBackground(String... params) {
-
-        String s = null;
-        String result1 ="";
-        try {
-
-            int time = 1000;
-            getsData();
-            while(Data==""){
-                try {
-//
-                    Thread.sleep(time);
-                    time+=100;
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-
-            Temperature = new ArrayList<>();
-            PM25 = new ArrayList<>();
-            Humidity = new ArrayList<>();
-            AllData = new ArrayList<>();
-            for (int i =0;i<24;i++){
-                Temperature.add((long) 0);
-                PM25.add((long) 0);
-                Humidity.add((long) 0);
-            }
-            JSONObject JsonData = new JSONObject(Data);
-            JSONArray Observations = JsonData.getJSONArray("observations");
-            String s1 = Observations.toString();
-            int size = Observations.length();
-            int size_observation = Observations.length()/3;
-
-            for (int i=0; i<size; i++){
-                String ResultTime = Observations.getJSONObject(i).getString("resultTime");
-
-                double subtract_curTime_resultTime = (Time.getTime()- FormatResultTime(ResultTime).getTime())/3600000;
-                int RoundSubtract = (int) Math.round(subtract_curTime_resultTime);
-                if((24-RoundSubtract)>=0){
-                    String observableProperty = Observations.getJSONObject(i).getString("observableProperty");
-                    if(observableProperty.equals("temperature")){
-                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                        String temperature = result.getString("value");
-                        Temperature.set(24-RoundSubtract,Math.round(Double.parseDouble(temperature)));
-//                    Temperature.add(24-RoundSubtract-1, Math.round(Double.parseDouble(temperature)));
-                    } else if(observableProperty.equals("Humidity")){
-                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                        String humidity = result.getString("value");
-                        Humidity.set(24-RoundSubtract,Math.round(Double.parseDouble(humidity)));
-                    } else if(observableProperty.equals("PM2.5")){
-                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                        String pm25 = result.getString("value");
-                        PM25.set(24-RoundSubtract,Math.round(Double.parseDouble(pm25)));
-                    }
-//
-                }
-            }
-
-            for (int i =0;i<24;i++){
-                AllData.add(PM25.get(i));
-            }
-            for (int i =0;i<24;i++){
-                AllData.add(Temperature.get(i));
-            }
-            for (int i =0;i<24;i++){
-                AllData.add(Humidity.get(i));
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
-        return AllData;
+//
+        return Data;
     }
 
     @Override
-    protected void onPostExecute(ArrayList<Long> s) {
+    protected void onPostExecute(String s) {
 
 
     }
@@ -136,16 +80,10 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
 
             @Override
             public void run() {
-                long milliSeconds = Time.getTime() - 24*3600*1000;
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(milliSeconds);
-                Date date = new Date(milliSeconds);
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
-                String current_time = FormatTime(Time);
-                String before_time = FormatTime(date);
+
                 Looper.prepare(); //For Preparing Message Pool for the childThread
                 HttpClient client = new DefaultHttpClient();
-                HttpConnectionParams.setConnectionTimeout(client.getParams(), 2000); //Timeout Limit
+                HttpConnectionParams.setConnectionTimeout(client.getParams(), 1000); //Timeout Limit
                 HttpResponse response;
 //                JSONObject json = new JSONObject();
 
@@ -207,6 +145,7 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
             }
         });
         t.start();
+
 //        return data[0];
     }
 
@@ -259,6 +198,65 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, ArrayList<Long
 
     public ArrayList<Long>getAllData(){
         return AllData;
+    }
+
+    public void ParseJsonData(String JSON_Data, ArrayList<Long> PM25, ArrayList<Long> Temperature, ArrayList<Long> Humidity){
+        try {
+            Calendar c = Calendar.getInstance();
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+//
+            try {
+                Time = df.parse(df.format(c.getTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+
+
+//            Temperature = new ArrayList<>();
+//            PM25 = new ArrayList<>();
+//            Humidity = new ArrayList<>();
+////            AllData = new ArrayList<>();
+            for (int i =0;i<24;i++){
+                Temperature.add((long) 0);
+                PM25.add((long) 0);
+                Humidity.add((long) 0);
+            }
+            JSONObject JsonData = new JSONObject(JSON_Data);
+            JSONArray Observations = JsonData.getJSONArray("observations");
+            String s1 = Observations.toString();
+            int size = Observations.length();
+
+            for (int i=0; i<size; i++){
+                String ResultTime = Observations.getJSONObject(i).getString("resultTime");
+
+                double subtract_curTime_resultTime = (Time.getTime()- FormatResultTime(ResultTime).getTime())/3600000;
+                int RoundSubtract = (int) Math.round(subtract_curTime_resultTime);
+                if((24-RoundSubtract)>=0){
+                    String observableProperty = Observations.getJSONObject(i).getString("observableProperty");
+                    if(observableProperty.equals("temperature")){
+                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                        String temperature = result.getString("value");
+                        Temperature.set(24-RoundSubtract,Math.round(Double.parseDouble(temperature)));
+//                    Temperature.add(24-RoundSubtract-1, Math.round(Double.parseDouble(temperature)));
+                    } else if(observableProperty.equals("Humidity")){
+                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                        String humidity = result.getString("value");
+                        Humidity.set(24-RoundSubtract,Math.round(Double.parseDouble(humidity)));
+                    } else if(observableProperty.equals("PM2.5")){
+                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                        String pm25 = result.getString("value");
+                        PM25.set(24-RoundSubtract,Math.round(Double.parseDouble(pm25)));
+                    }
+//
+                }
+            }
+
+//
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
 

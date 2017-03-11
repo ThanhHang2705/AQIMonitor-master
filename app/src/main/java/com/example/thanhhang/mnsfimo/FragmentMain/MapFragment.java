@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thanhhang.mnsfimo.Activities.Detail;
+import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.MainActivity;
@@ -50,6 +51,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -165,6 +167,16 @@ public class MapFragment extends Fragment {
                     @Override
                     public boolean onMarkerClick(final Marker marker) {
 
+                        DataFromLocalHost dataFromLocalHost = new DataFromLocalHost();
+                        dataFromLocalHost.execute();
+                        String AllData = null;
+                        try {
+                            AllData = dataFromLocalHost.get();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
                         final AlertDialog.Builder alertadd = new AlertDialog.Builder(getContext());
                         LayoutInflater factory = LayoutInflater.from(getContext());
                         final View view = factory.inflate(R.layout.location_info, null);
@@ -187,16 +199,17 @@ public class MapFragment extends Fragment {
                         }
                         @SuppressWarnings("unused") final
                         Button detail = (Button)view.findViewById(R.id.detail);
+                        final String finalAllData = AllData;
                         detail.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 Toast.makeText(getContext(),"detail",Toast.LENGTH_LONG).show();
-
-//                                Bundle bundle = new Bundle();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("AllData", finalAllData);
 //                                bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
 //                                bundle.putString("Address", marker.getTitle());
                                 Intent intent = new Intent(getContext(),Detail.class);
-//                                intent.putExtra("TapTin", bundle);
+                                intent.putExtra("TapTin", bundle);
                                 startActivity(intent);
                             }
                         });
@@ -406,4 +419,7 @@ public class MapFragment extends Fragment {
     }
 
 
+
+
 }
+

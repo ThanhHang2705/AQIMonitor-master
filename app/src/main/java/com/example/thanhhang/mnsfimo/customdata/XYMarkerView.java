@@ -19,13 +19,14 @@ public class XYMarkerView extends MarkerView {
 
     private TextView tvContent;
     private IAxisValueFormatter xAxisValueFormatter;
-
+    private String type;
     private DecimalFormat format;
 
-    public XYMarkerView(Context context, IAxisValueFormatter xAxisValueFormatter) {
+    public XYMarkerView(Context context, IAxisValueFormatter xAxisValueFormatter, String type) {
         super(context, R.layout.custom_marker_view);
 
         this.xAxisValueFormatter = xAxisValueFormatter;
+        this.type=type;
         tvContent = (TextView) findViewById(R.id.tvContent);
         format = new DecimalFormat("###.0");
     }
@@ -35,7 +36,7 @@ public class XYMarkerView extends MarkerView {
     @Override
     public void refreshContent(Entry e, Highlight highlight) {
 
-        tvContent.setText("Time: " + xAxisValueFormatter.getFormattedValue(e.getX(), null) + "h, PM: " + (int)e.getY());
+        tvContent.setText("Time: " + xAxisValueFormatter.getFormattedValue(e.getX(), null) + "h, "+type+": " + (int)e.getY());
 
         super.refreshContent(e, highlight);
     }
