@@ -71,6 +71,9 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setTabsFromPagerAdapter(adapter);
+        setupTabIcons();
+
+
 
 //        CreateTable();
 //        showTable();
@@ -92,6 +95,18 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(MainActivity.this,"You are NOT conncted",Toast.LENGTH_LONG).show();
         }
+    }
+// xét icon cho tablayout
+    private void setupTabIcons() {
+        int[] tabIcons = {
+                R.drawable.ic_map_black_24dp,
+                R.drawable.ic_format_list_bulleted_black_24dp,
+                R.drawable.ic_edit_location_black_24dp
+        };
+
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     @Override
