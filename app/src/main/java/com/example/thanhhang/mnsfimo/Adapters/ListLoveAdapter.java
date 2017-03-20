@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.KQNode;
@@ -24,6 +25,7 @@ public class ListLoveAdapter extends BaseAdapter {
     TextView txt_aqi;
     TextView txt_doAm;
     TextView txt_nhietDo;
+    ImageView img_id;
 
     public ListLoveAdapter(ArrayList<KQNode> listLove, Context context) {
         this.listLove = listLove;
@@ -56,6 +58,7 @@ public class ListLoveAdapter extends BaseAdapter {
         txt_nhietDo = (TextView) view.findViewById(R.id.txt_nhietDo);
 
         KQNode kqNode = listLove.get(position);
+
         txt_diadiem.setText(kqNode.getNameNode()+"");
         txt_aqi.setText(kqNode.getPM()+"");
         txt_doAm.setText(kqNode.getHumidity()+"");

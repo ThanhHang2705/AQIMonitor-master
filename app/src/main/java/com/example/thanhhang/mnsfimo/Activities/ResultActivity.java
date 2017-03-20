@@ -32,9 +32,9 @@ public class ResultActivity extends AppCompatActivity implements AdapterView.OnI
         lv_KQ.setOnItemClickListener(this);
     }
     private void getListKQ(ArrayList<KQNode> a){
-         a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","2.5",20,60,new LatLng(24,35)));
-        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","2.5",20,60,new LatLng(24,35)));
-        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","2.5",20,60,new LatLng(24,35)));
+         a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","26",20,60,new LatLng(24,35)));
+        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","100",20,60,new LatLng(24,35)));
+        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","60",20,60,new LatLng(24,35)));
     }
 
     @Override

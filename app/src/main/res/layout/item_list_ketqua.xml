@@ -1,81 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:background="@drawable/selector_list"
-    android:layout_height="100dp">
-    <TextView
-        android:id="@+id/txt_id"
+    android:background="@drawable/selector_frame"
+    android:layout_height="70dp">
+
+    <ImageView
+        android:id="@+id/img_id"
         android:text="ID"
         android:textSize="20sp"
         android:textColor="#000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/txt_nameNode"
-        android:text="Tên Node"
-        android:textSize="15sp"
-        android:textColor="#000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/txt_address"
-        android:text="Vị Trí"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:textSize="15sp"
-        android:textColor="#000"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent" />
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
         <TextView
-            android:id="@+id/txt_pm"
-            android:text="PM 2.5"
+            android:gravity="center_vertical"
+            android:id="@+id/txt_nameNode"
+            android:text="Tên Node"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <TextView
+            android:id="@+id/txt_address"
+            android:text="Vị Trí"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+        <TextView
+            android:gravity="center"
+            android:id="@+id/txt_pm"
+            android:text="PM 2.5"
+            android:textSize="20sp"
+            android:textColor="#0f0fe2"
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
             android:id="@+id/txt_latlng"
             android:text="LatLng"
             android:textSize="15sp"
             android:textColor="#000"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:id="@+id/txt_temp"
-            android:text="Temp"
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:gravity="center"/>
 
-        <TextView
-            android:id="@+id/txt_hum"
-            android:text="Humidity"
-            android:textSize="15sp"
-            android:textColor="#000"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <TextView
+                android:gravity="center_vertical"
+                android:id="@+id/txt_temp"
+                android:text="Temp"
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_marginRight="3dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#000"/>
+
+            <TextView
+                android:id="@+id/txt_hum"
+                android:text="Humidity"
+                android:textSize="15sp"
+                android:textColor="#000"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
+
 
 
 
