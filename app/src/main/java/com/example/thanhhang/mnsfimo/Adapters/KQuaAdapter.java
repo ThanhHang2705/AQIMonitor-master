@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.KQNode;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
  */
 
 public class KQuaAdapter extends BaseAdapter {
-    ImageView img_id;
+    TextView txt_id;
     TextView txt_nameNode;
     TextView  txt_address;
     TextView txt_PM;
@@ -51,41 +50,22 @@ public class KQuaAdapter extends BaseAdapter {
         if (convertView==null){
             convertView = inflater.inflate(R.layout.item_list_ketqua,null);
         }
-
+//        txt_id = (TextView) convertView.findViewById(R.id.txt_id);
         txt_nameNode = (TextView) convertView.findViewById(R.id.txt_nameNode);
         txt_address= (TextView) convertView.findViewById(R.id.txt_address);
         txt_PM = (TextView) convertView.findViewById(R.id.txt_pm);
         txt_temp = (TextView) convertView.findViewById(R.id.txt_temp);
         txt_hum = (TextView) convertView.findViewById(R.id.txt_hum);
         txt_latlag = (TextView) convertView.findViewById(R.id.txt_latlng);
-        img_id= (ImageView) convertView.findViewById(R.id.img_id);
-
         //gán giá trị
         KQNode kq = list.get(position);
-
-        // do du lieu
-        int aqi = Integer.parseInt(kq.getPM().toString());
-        if(aqi>=0 && aqi<=24){
-            img_id.setImageResource(R.drawable.tot);
-        }else if(aqi<=50){
-            img_id.setImageResource(R.drawable.binhthuong);
-        }else if(aqi<=90){
-            img_id.setImageResource(R.drawable.canhbao);
-        }else if(aqi<=120){
-            img_id.setImageResource(R.drawable.xau0);
-        }else if(aqi<=160){
-            img_id.setImageResource(R.drawable.xau1);
-        }else if(aqi<=260){
-            img_id.setImageResource(R.drawable.xau2);
-        }else {
-            img_id.setImageResource(R.drawable.xau3);
-        }
+//        txt_id.setText("ID : "+ kq.getID());
         txt_nameNode.setText("Ten Node: " +kq.getNameNode());
         txt_address.setText("Dia chi:" +kq.getAddress());
         txt_PM.setText("PM 2.5 : " + kq.getPM());
         txt_temp.setText("Temp: " + kq.getTemperature());
         txt_hum.setText("Hum: "+ kq.getHumidity());
-        txt_latlag.setText(kq.getLatLng()+"");
+        txt_latlag.setText("LatLng: "+ kq.getLatLng());
 
         return convertView;
     }

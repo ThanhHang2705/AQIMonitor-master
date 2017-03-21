@@ -17,6 +17,8 @@ import java.util.ArrayList;
 public class ResultActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
     ListView lv_KQ;
     ArrayList<KQNode> listKQ= new ArrayList<>();
+    ArrayList<KQNode> ListNode= new ArrayList<>();
+    ArrayList<String> listResult = new ArrayList<>();
     KQuaAdapter adapter;
 
     @Override
@@ -25,6 +27,13 @@ public class ResultActivity extends AppCompatActivity implements AdapterView.OnI
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_result);
         lv_KQ = (ListView) findViewById(R.id.lv_Kq);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("TapTin");
+        if (bundle != null) {
+//
+            listResult = bundle.getStringArrayList("Result");
+        }
+
         getListKQ(listKQ);
         adapter = new KQuaAdapter(listKQ,this);
         lv_KQ.setAdapter(adapter);
@@ -32,13 +41,25 @@ public class ResultActivity extends AppCompatActivity implements AdapterView.OnI
         lv_KQ.setOnItemClickListener(this);
     }
     private void getListKQ(ArrayList<KQNode> a){
-         a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","26",20,60,new LatLng(24,35)));
-        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","100",20,60,new LatLng(24,35)));
-        a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","60",20,60,new LatLng(24,35)));
+//         a.add(new KQNode(1,"ĐHQGHN","Xuân Thủy","2.5",20,60,new LatLng(24,35)));
+        for (int i=0;i<listResult.size();i++){
+            String[]s=listResult.get(i).split("\n");
+            int ID = Integer.parseInt(s[0]);
+            String NameNode = s[1];
+            String Address = s[2];
+            String PM = s[3];
+            int humidity = Integer.parseInt(s[4]);
+            int temperature = Integer.parseInt(s[5]);
+            LatLng latLng = new LatLng(Double.parseDouble(s[6]),Double.parseDouble(s[7]));
+            a.add(new KQNode(ID,NameNode,Address,PM,humidity,temperature,latLng));
+        }
+
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         startActivity(new Intent(getApplicationContext(),Detail.class));
     }
+
+
 }

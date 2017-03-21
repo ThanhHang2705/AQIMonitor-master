@@ -19,6 +19,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
     @Override
     protected String doInBackground(String... params) {
         int time = 100;
-        getsData();
+
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
 //
@@ -51,18 +53,22 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
         Date date = new Date(milliSeconds);
         current_time = FormatTime(Time);
         before_time = FormatTime(date);
-        while(Data==""){
-            try {
+        int dem = 0;
+        if(isConnectedToServer("http://118.70.72.15:8080/sos-bundle/service",1000)){
+            getsData();
+            while(Data==""|| dem==10){
+                try {
 //
-                Thread.sleep(time);
-                time+=100;
+                    Thread.sleep(time);
+                    time+=100;
+                    dem += 1;
 
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
-//
         return Data;
     }
 
@@ -256,6 +262,18 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean isConnectedToServer(String url, int timeout) {
+        try{
+            URL myUrl = new URL(url);
+            URLConnection connection = myUrl.openConnection();
+            connection.setConnectTimeout(timeout);
+            connection.connect();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
