@@ -3,6 +3,7 @@ package com.example.thanhhang.mnsfimo.FragmentMain;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,13 +19,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.Activities.Detail;
-import com.example.thanhhang.mnsfimo.Adapters.ListLoveAdapter;
+import com.example.thanhhang.mnsfimo.Adapters.KQuaAdapter;
 import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.Love;
 import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
+import com.example.thanhhang.mnsfimo.Service.MyService;
 import com.example.thanhhang.mnsfimo.Setting.Notification;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class ListmainFragment extends Fragment {
     ListView list;
-    ListLoveAdapter adapter;
+    KQuaAdapter adapter;
     private ArrayList<KQNode> listLove;
 //    static ArrayList<Love> listLove= new ArrayList<>();
     static KQNode kqNode;
@@ -62,9 +64,14 @@ public class ListmainFragment extends Fragment {
         int size = listLove.size();
         //list.setAdapter(null);
         size = list.getCount();
-        adapter = new ListLoveAdapter(listLove,getContext());
+        adapter = new KQuaAdapter(listLove,getContext());
         list.setAdapter(adapter);
+        ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) list.getLayoutParams();
+
+        lp.height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        list.setLayoutParams(lp);
         size = list.getCount();
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
 
@@ -87,20 +94,29 @@ public class ListmainFragment extends Fragment {
                 adb.setNegativeButton("Detail", new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(finalAllData!=""){
+
                             Bundle bundle = new Bundle();
                             bundle.putString("AllData", finalAllData);
-                            TextView PM = (TextView) list.getChildAt(position).findViewById(R.id.txt_pm);
-                            String pm = PM.getText().toString();
-                            int pm_int = Integer.parseInt(pm);
-                            bundle.putInt("PM", Integer.parseInt(pm));
-                            TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_diadiem);
+                            TextView pm = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_pm);
+                            String PM25 = pm.getText().toString().substring(9);
+                            int pm_int = Integer.parseInt(PM25);
+                            bundle.putInt("PM", Integer.parseInt(PM25));
+                            TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_nameNode);
                             String NameNode = diadiem.getText().toString();
                             bundle.putString("Address",NameNode);
+                            ArrayList<KQNode> temp = ((MainActivity)getActivity()).getDataFromSQLite();
+                            for (int i=0 ;i<temp.size();i++){
+                                String nameNode = temp.get(i).getNameNode();
+                                if(NameNode.equals(nameNode)){
+    //                                Toast.makeText(getContext(),temp.get(i).getID(),Toast.LENGTH_LONG).show();
+                                    bundle.putInt("ID",temp.get(i).getID());
+                                    break;
+                                }
+                            }
                             Intent intent = new Intent(getContext(), Detail.class);
                             intent.putExtra("TapTin", bundle);
                             startActivity(intent);
-                        }
+
 
                     }
                 });
@@ -110,8 +126,10 @@ public class ListmainFragment extends Fragment {
 //                        listLove.remove(positionToRemove);
 //                        adapter = new ListLoveAdapter(listLove,getContext());
 //                        list.setAdapter(adapter);
-                        TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_diadiem);
+                        TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_nameNode);
                         String NameNode = diadiem.getText().toString();
+                        TextView pm = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_pm);
+                        String PM25 = pm.getText().toString().substring(9);
                         ArrayList<KQNode> temp = ((MainActivity)getActivity()).getDataFromSQLite();
                         for (int i=0 ;i<temp.size();i++){
                             String nameNode = temp.get(i).getNameNode();
@@ -124,7 +142,7 @@ public class ListmainFragment extends Fragment {
                         listLove.remove(positionToRemove);
                         UpdateListLove();
                         int size = listLove.size();
-                        adapter = new ListLoveAdapter(listLove,getContext());
+                        adapter = new KQuaAdapter(listLove,getContext());
                         list.setAdapter(adapter);
                         ArrayList<Fragment> al = (ArrayList<Fragment>) getFragmentManager().getFragments();
 
@@ -132,14 +150,12 @@ public class ListmainFragment extends Fragment {
                         for (int i=0;i<al.size();i++){
                             removeFragment = al.get(i);
                         }
+                        //Không hiển thị thông báo về Node này nữa
+                        new MyService().setNotification(NameNode,7, Double.parseDouble(PM25));
+
                         removeFragment = al.get(2);
                         FragmentManager FM = getActivity().getSupportFragmentManager();
                         FragmentTransaction fragmentTransaction = FM.beginTransaction();
-
-
-
-
-
                         fragmentTransaction.detach(removeFragment);
                         fragmentTransaction.attach(removeFragment);
                         fragmentTransaction.commit();
@@ -150,11 +166,11 @@ public class ListmainFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Bundle bundle = new Bundle();
-                        TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_diadiem);
+                        TextView diadiem = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_nameNode);
                         String NameNode = diadiem.getText().toString();
                         bundle.putString("NameNode",NameNode);
                         TextView pm = (TextView) list.getChildAt(positionToRemove).findViewById(R.id.txt_pm);
-                        String PM25 = pm.getText().toString();
+                        String PM25 = pm.getText().toString().substring(9);
                         bundle.putString("PM25",PM25);
                         Intent intent = new Intent(getContext(), Notification.class);
                         intent.putExtra("TapTin", bundle);
@@ -179,7 +195,7 @@ public class ListmainFragment extends Fragment {
     }
 
     public void UpdateAdapter(){
-        adapter = new ListLoveAdapter(listLove,getContext());
+        adapter = new KQuaAdapter(listLove,getContext());
         list.setAdapter(adapter);
     }
 

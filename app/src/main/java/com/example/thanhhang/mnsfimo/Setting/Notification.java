@@ -28,9 +28,9 @@ public class Notification extends AppCompatActivity{
         setContentView(R.layout.level_api_alert);
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("TapTin");
+        String pm25 = null;
         if (bundle != null) {
-            PM25 = Double.parseDouble(bundle.getString("PM25"));
-//                    Address = bundle.getString("Address");
+            pm25= bundle.getString("PM25");
             NameNode= bundle.getString("NameNode");
         }
         OK = (Button)findViewById(R.id.notification_ok);
@@ -45,17 +45,16 @@ public class Notification extends AppCompatActivity{
                 Conditional = PM_Notification.indexOfChild(RB);
             }
         });
+        PM25 = Double.valueOf(pm25);
 
         OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Bundle bundle = new Bundle();
-//                bundle.putString("NameNode", NameNode);
-//                bundle.putInt("Conditional",Conditional);
-//                bundle.putDouble("PM25",PM25);
-//                Intent intent = new Intent(Notification.this, MyService.class);
-//                intent.putExtra("TapTin",bundle);
-//                startActivity(intent);
+                Bundle bundle = new Bundle();
+                bundle.putInt("CurrentFragment",1);
+                Intent intent = new Intent(Notification.this,MainActivity.class);
+                intent.putExtra("TapTin",bundle);
+                startActivity(intent);
                 new MyService().setNotification(NameNode,Conditional,PM25);
 
             }
@@ -64,7 +63,10 @@ public class Notification extends AppCompatActivity{
         Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Notification.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("CurrentFragment",1);
+                Intent intent = new Intent(Notification.this,MainActivity.class);
+                intent.putExtra("TapTin",bundle);
                 startActivity(intent);
             }
         });

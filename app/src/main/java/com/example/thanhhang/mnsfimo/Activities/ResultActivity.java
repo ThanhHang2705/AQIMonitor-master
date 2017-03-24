@@ -1,14 +1,18 @@
 package com.example.thanhhang.mnsfimo.Activities;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.thanhhang.mnsfimo.Adapters.KQuaAdapter;
 import com.example.thanhhang.mnsfimo.KQNode;
+import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -37,6 +41,10 @@ public class ResultActivity extends AppCompatActivity implements AdapterView.OnI
         getListKQ(listKQ);
         adapter = new KQuaAdapter(listKQ,this);
         lv_KQ.setAdapter(adapter);
+        ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) lv_KQ.getLayoutParams();
+
+        lp.height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        lv_KQ.setLayoutParams(lp);
         adapter.notifyDataSetChanged();
         lv_KQ.setOnItemClickListener(this);
     }
@@ -61,5 +69,18 @@ public class ResultActivity extends AppCompatActivity implements AdapterView.OnI
         startActivity(new Intent(getApplicationContext(),Detail.class));
     }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Bundle bundle = new Bundle();
+                bundle.putInt("CurrentFragment",2);
+                Intent intent = new Intent(ResultActivity.this,MainActivity.class);
+                intent.putExtra("TapTin",bundle);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

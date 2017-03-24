@@ -7,7 +7,9 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -44,6 +46,7 @@ public class ConnectNode extends AppCompatActivity {
             SecurityMode = bundle.getString("SecurityMode");
         }
         PassWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
@@ -55,6 +58,7 @@ public class ConnectNode extends AppCompatActivity {
 
                 for(;;){
                     if(!ssid.equals(SSID)){
+                        wifiManager.disconnect();
                         try {
                             createAPConfiguration(NameNode.getText().toString(),PassWord.getText().toString(),"WPA");
                         } catch (NoSuchMethodException e) {

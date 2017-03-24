@@ -5,6 +5,7 @@ import android.Manifest;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -28,7 +29,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thanhhang.mnsfimo.Activities.Detail;
+import com.example.thanhhang.mnsfimo.Adapters.KQuaAdapter;
 import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
@@ -73,7 +74,7 @@ public class MapFragment extends Fragment {
     };
     ArrayList<KQNode>listLove;
     ListView listView;
-    ArrayAdapter arrayAdapter;
+    KQuaAdapter arrayAdapter;
     private static ArrayList<String> COUNTRIES2;
     private ArrayList<KQNode> ListNode;
 
@@ -91,8 +92,13 @@ public class MapFragment extends Fragment {
         UpdateListNode();
         UpdateListNameNode();
         listView = (ListView) v.findViewById(R.id.result_4_basic_search);
-        arrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, COUNTRIES2);
+        arrayAdapter = new KQuaAdapter(ListNode,getContext());
         listView.setAdapter(arrayAdapter);
+        arrayAdapter.notifyDataSetChanged();
+        ViewGroup.LayoutParams lp = (ViewGroup.LayoutParams) listView.getLayoutParams();
+
+        lp.height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        listView.setLayoutParams(lp);
         listView.setVisibility(View.GONE);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -206,6 +212,15 @@ public class MapFragment extends Fragment {
                                 Toast.makeText(getContext(),"detail",Toast.LENGTH_LONG).show();
                                 Bundle bundle = new Bundle();
                                 bundle.putString("AllData", finalAllData);
+                                String NameNode=marker.getTitle().toString();
+                                for (int i=0 ;i<ListNode.size();i++){
+                                    String nameNode = ListNode.get(i).getNameNode();
+                                    if(NameNode.equals(nameNode)){
+                                        //                                Toast.makeText(getContext(),temp.get(i).getID(),Toast.LENGTH_LONG).show();
+                                        bundle.putInt("ID",ListNode.get(i).getID());
+                                        break;
+                                    }
+                                }
 //                                bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
 //                                bundle.putString("Address", marker.getTitle());
                                 Intent intent = new Intent(getContext(),Detail.class);

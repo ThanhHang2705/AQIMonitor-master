@@ -54,7 +54,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
 
     RangeSeekBar<Integer>  humidity,temperature;
     String NameOfAddress;
-    String AddressToFind;
+    String[] AddressToFind;
     List<Address> address;
     LatLng CurrentLatLng;
     Spinner choose_pm,choose_time;
@@ -232,7 +232,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
                 List<Integer> typePlace;
                 Address.setText(place.getAddress());
                 NameOfAddress = place.getName().toString();
-                AddressToFind = place.getAddress().toString();
+                AddressToFind = place.getAddress().toString().split(", ");
                 CurrentLatLng = place.getLatLng();
 //                getCompleteAddressString(latLng.latitude,latLng.longitude);
 
@@ -250,7 +250,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
     }
 
     private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
-        String strAdd = "";
+        String strAdd = null;
         Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
         try {
 
@@ -261,8 +261,9 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
 
                 for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
                     strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+//                    strAdd.add(returnedAddress.getAddressLine(i));
                 }
-                strAdd = strReturnedAddress.toString();
+                strAdd=strReturnedAddress.toString();
                 Log.w("My Current loction address", "" + strReturnedAddress.toString());
             } else {
                 Log.w("My Current loction address", "No Address returned!");
@@ -285,25 +286,45 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
             double latitude = CurrentLatLng.latitude;
             double longTitude = CurrentLatLng.longitude;
             Location currentLocation = new Location("A");
+
             currentLocation.setLongitude(longTitude);
             currentLocation.setLatitude(latitude);
             for(int i=0;i<ListNode.size();i++){
+                String s=null;
                 Location AnotherLocation = new Location("B");
-                AnotherLocation.setLatitude(ListNode.get(i).getLatLng().latitude);
-                AnotherLocation.setLongitude(ListNode.get(i).getLatLng().longitude);
-                double distance = currentLocation.distanceTo(AnotherLocation);
-                if(distance<=1000){
-                    int PM = (int) Math.round(Double.parseDouble(ListNode.get(i).getPM()));
-                    if ( PM>min_pm){
-                        int temperature = ListNode.get(i).getTemperature();
-                        if(temperature<=max_temperature && temperature>=min_temperature){
-                            int humidity = ListNode.get(i).getHumidity();
-                            if(humidity<=max_humidity && humidity>=min_humidity){
-                                String s = ListNode.get(i).getID()+"\n"+ListNode.get(i).getNameNode()+"\n"+
-                                        ListNode.get(i).getAddress()+"\n"+PM+"\n"+humidity+"\n"+
-                                        temperature+"\n"+ListNode.get(i).getLatLng().latitude+"\n"+
-                                        ListNode.get(i).getLatLng().longitude;
-                                ListResult.add(s);
+                latitude=ListNode.get(i).getLatLng().latitude;
+                longTitude=ListNode.get(i).getLatLng().longitude;
+                int PM = (int) Math.round(Double.parseDouble(ListNode.get(i).getPM()));
+                String Node=getCompleteAddressString(latitude,longTitude);
+                int temperature = ListNode.get(i).getTemperature();
+                int humidity = ListNode.get(i).getHumidity();
+                for(int j=0;j<2;j++){
+                    String a = AddressToFind[j];
+                    if(Node.contains(a)){
+                        s = ListNode.get(i).getID()+"\n"+ListNode.get(i).getNameNode()+"\n"+
+                                ListNode.get(i).getAddress()+"\n"+PM+"\n"+humidity+"\n"+
+                                temperature+"\n"+ListNode.get(i).getLatLng().latitude+"\n"+
+                                ListNode.get(i).getLatLng().longitude;
+                        ListResult.add(s);
+                        break;
+                    }
+                }
+                if(s==null){
+                    AnotherLocation.setLatitude(latitude);
+                    AnotherLocation.setLongitude(longTitude);
+                    double distance = currentLocation.distanceTo(AnotherLocation);
+                    if(distance<=3000){
+                        PM = (int) Math.round(Double.parseDouble(ListNode.get(i).getPM()));
+                        if ( PM>min_pm){
+                            if(temperature<=max_temperature && temperature>=min_temperature){
+                                if(humidity<=max_humidity && humidity>=min_humidity){
+                                    s = ListNode.get(i).getID()+"\n"+ListNode.get(i).getNameNode()+"\n"+
+                                            ListNode.get(i).getAddress()+"\n"+PM+"\n"+humidity+"\n"+
+                                            temperature+"\n"+ListNode.get(i).getLatLng().latitude+"\n"+
+                                            ListNode.get(i).getLatLng().longitude;
+
+                                    ListResult.add(s);
+                                }
                             }
                         }
                     }
@@ -334,8 +355,8 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
     }
 
     public void RemoveNameFromAddress(){
-        String[] s = AddressToFind.split(NameOfAddress);
-        AddressToFind = s[1];
-        NameOfAddress = s[0];
+//        String[] s = AddressToFind.split(NameOfAddress);
+//        AddressToFind = s[1];
+//        NameOfAddress = s[0];
     }
 }

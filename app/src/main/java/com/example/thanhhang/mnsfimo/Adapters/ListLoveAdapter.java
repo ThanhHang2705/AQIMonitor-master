@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.KQNode;
-import com.example.thanhhang.mnsfimo.Love;
 import com.example.thanhhang.mnsfimo.R;
 
 import java.util.ArrayList;
@@ -65,4 +64,6 @@ public class ListLoveAdapter extends BaseAdapter {
         txt_nhietDo.setText(kqNode.getTemperature()+"");
         return view;
     }
+
+
 }

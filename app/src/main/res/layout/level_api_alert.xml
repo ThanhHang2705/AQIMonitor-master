@@ -48,30 +48,18 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-
+            android:paddingLeft="15dip"
             android:layout_marginTop="33dp"
-            android:text="Luôn luôn gửi thông báo" />
 
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/radioButton"
-            android:layout_alignStart="@+id/radioButton"
-            android:layout_below="@+id/radioButton"
-            android:layout_marginTop="31dp"
-            android:layout_weight="1"
-            android:text="Gửi thông báo khi PM 2.5 > 36" />
+            android:text="Luôn luôn gửi thông báo" />
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/radioButton2"
-            android:layout_alignStart="@+id/radioButton2"
-            android:layout_below="@+id/radioButton2"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
+            android:paddingLeft="15dip"
             android:text="Gửi thông báo khi PM 2.5 > 76" />
 
         <RadioButton
@@ -81,9 +69,22 @@
             android:layout_alignLeft="@+id/radioButton3"
             android:layout_alignStart="@+id/radioButton3"
             android:layout_below="@+id/radioButton3"
-            android:layout_marginTop="39dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
+            android:paddingLeft="15dip"
             android:text="Gửi thông báo khi PM 2.5 > 116" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/radioButton"
+            android:layout_alignStart="@+id/radioButton"
+            android:layout_below="@+id/radioButton"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:paddingLeft="15dip"
+            android:text="Gửi thông báo khi PM 2.5 > 36" />
 
         <RadioButton
             android:id="@+id/radioButton5"
@@ -92,8 +93,9 @@
             android:layout_alignLeft="@+id/radioButton4"
             android:layout_alignStart="@+id/radioButton4"
             android:layout_below="@+id/radioButton4"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
+            android:paddingLeft="15dip"
             android:text="Gửi thông báo khi PM 2.5 > 151" />
 
         <RadioButton
@@ -103,8 +105,9 @@
             android:layout_alignLeft="@+id/radioButton5"
             android:layout_alignStart="@+id/radioButton5"
             android:layout_below="@+id/radioButton5"
-            android:layout_marginTop="34dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
+            android:paddingLeft="15dip"
             android:text="Gửi thông báo khi PM 2.5 > 251" />
 
         <RadioButton
@@ -114,30 +117,58 @@
             android:layout_alignLeft="@+id/radioButton6"
             android:layout_alignStart="@+id/radioButton6"
             android:layout_below="@+id/radioButton6"
-            android:layout_marginTop="33dp"
+            android:layout_marginTop="20dp"
             android:layout_weight="1"
+            android:paddingLeft="15dip"
             android:text="Gửi thông báo khi PM 2.5 > 351" />
+
+        <RadioButton
+            android:id="@+id/radioButton8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_weight="1"
+            android:paddingLeft="15dip"
+            android:drawablePadding="@android:dimen/app_icon_size"
+            android:text="Không gửi thông báo" />
 
     </RadioGroup>
 
-    <Button
-        android:id="@+id/notification_ok"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="OK"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/notification_cancel"
-        android:layout_toStartOf="@+id/notification_cancel"
-        android:layout_marginRight="22dp"
-        android:layout_marginEnd="22dp" />
-    <Button
-        android:id="@+id/notification_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:layout_marginRight="21dp"
-        android:layout_marginEnd="21dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        >
+        <Button
+            android:id="@+id/notification_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SAVE"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/notification_cancel"
+            android:layout_toStartOf="@+id/notification_cancel"
+            android:layout_marginRight="22dp"
+            android:layout_marginEnd="22dp"
+            android:background="@drawable/border"
+            android:textColor="@color/A700"
+            android:stateListAnimator="@null" />
+        <Button
+            android:id="@+id/notification_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:layout_marginRight="21dp"
+            android:layout_marginEnd="21dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+
+            android:textColor="@color/Black"
+            android:background="@drawable/border"
+            android:stateListAnimator="@null" />
+    </RelativeLayout>
+
+
 </RelativeLayout>

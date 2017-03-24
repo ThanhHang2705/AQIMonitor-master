@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/img_id"
         android:text="ID"
-        android:textSize="20sp"
+        android:layout_marginStart="10dp"
         android:textColor="#000"
         android:layout_width="0dp"
         android:layout_weight="1"

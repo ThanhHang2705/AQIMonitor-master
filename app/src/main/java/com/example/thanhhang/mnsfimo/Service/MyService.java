@@ -297,6 +297,8 @@ public class MyService extends Service {
             if(PM25>350){
                 CreateNotification(PM25);
             }
+        }else if(Conditional==7){
+
         }
 
     }

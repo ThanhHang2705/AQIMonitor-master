@@ -228,34 +228,37 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
                 PM25.add((long) 0);
                 Humidity.add((long) 0);
             }
-            JSONObject JsonData = new JSONObject(JSON_Data);
-            JSONArray Observations = JsonData.getJSONArray("observations");
-            String s1 = Observations.toString();
-            int size = Observations.length();
+            if(JSON_Data!=""){
+                JSONObject JsonData = new JSONObject(JSON_Data);
+                JSONArray Observations = JsonData.getJSONArray("observations");
+                String s1 = Observations.toString();
+                int size = Observations.length();
 
-            for (int i=0; i<size; i++){
-                String ResultTime = Observations.getJSONObject(i).getString("resultTime");
+                for (int i=0; i<size; i++){
+                    String ResultTime = Observations.getJSONObject(i).getString("resultTime");
 
-                double subtract_curTime_resultTime = (Time.getTime()- FormatResultTime(ResultTime).getTime())/3600000;
-                int RoundSubtract = (int) Math.round(subtract_curTime_resultTime);
-                if((24-RoundSubtract)>=0){
-                    String observableProperty = Observations.getJSONObject(i).getString("observableProperty");
-                    if(observableProperty.equals("temperature")){
-                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                        String temperature = result.getString("value");
-                        Temperature.set(24-RoundSubtract,Math.round(Double.parseDouble(temperature)));
+                    double subtract_curTime_resultTime = (Time.getTime()- FormatResultTime(ResultTime).getTime())/3600000;
+                    int RoundSubtract = (int) Math.round(subtract_curTime_resultTime);
+                    if((24-RoundSubtract)>=0){
+                        String observableProperty = Observations.getJSONObject(i).getString("observableProperty");
+                        if(observableProperty.equals("temperature")){
+                            JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                            String temperature = result.getString("value");
+                            Temperature.set(24-RoundSubtract,Math.round(Double.parseDouble(temperature)));
 //                    Temperature.add(24-RoundSubtract-1, Math.round(Double.parseDouble(temperature)));
-                    } else if(observableProperty.equals("Humidity")){
-                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                        String humidity = result.getString("value");
-                        Humidity.set(24-RoundSubtract,Math.round(Double.parseDouble(humidity)));
-                    } else if(observableProperty.equals("PM2.5")){
-                        JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
-                        String pm25 = result.getString("value");
-                        PM25.set(24-RoundSubtract,Math.round(Double.parseDouble(pm25)));
-                    }
+                        } else if(observableProperty.equals("Humidity")){
+                            JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                            String humidity = result.getString("value");
+                            Humidity.set(24-RoundSubtract,Math.round(Double.parseDouble(humidity)));
+                        } else if(observableProperty.equals("PM2.5")){
+                            JSONObject result = Observations.getJSONObject(i).getJSONObject("result");
+                            String pm25 = result.getString("value");
+                            PM25.set(24-RoundSubtract,Math.round(Double.parseDouble(pm25)));
+                        }
 //
+                    }
                 }
+
             }
 
 //

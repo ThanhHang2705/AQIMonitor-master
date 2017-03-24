@@ -1,11 +1,24 @@
 package com.example.thanhhang.mnsfimo.Activities;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
+import com.example.thanhhang.mnsfimo.Data.Database;
+import com.example.thanhhang.mnsfimo.KQNode;
+import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
 import com.example.thanhhang.mnsfimo.customdata.MyAxisValueFormatter;
 import com.example.thanhhang.mnsfimo.customdata.TimeAxisValueFormatter;
@@ -31,10 +44,15 @@ import java.util.ArrayList;
 
 public class Detail extends AppCompatActivity implements OnChartValueSelectedListener {
     static int PM;
-    String Address;
+    String NameNode;
+    int ID=1;
     private BarChart chart1, chart2, chart3;
     ArrayList<Long> Temperature, PM25, Humidity;
-    String AllData;
+    String AllData="";
+    TextView textView;
+    SQLiteDatabase database;
+    int status_favourite=R.drawable.not_favourite;
+    private static ArrayList<KQNode> FavouriteList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +64,8 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
                 Bundle bundle = intent.getBundleExtra("TapTin");
                 if (bundle != null) {
 //                    PM = bundle.getInt("PM");
-//                    Address = bundle.getString("Address");
+                    ID = bundle.getInt("ID");
+                    NameNode = bundle.getString("Address");
                     AllData = bundle.getString("AllData");
                 }
 //
@@ -63,7 +82,8 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
 //
 //
 
-
+        textView = (TextView)findViewById(R.id.address);
+        textView.setText(NameNode);
         chart1 = (BarChart) findViewById(R.id.bar_graph1);
         chart2 = (BarChart) findViewById(R.id.bar_graph2);
         chart3 = (BarChart) findViewById(R.id.bar_graph3);
@@ -74,7 +94,58 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
         init(chart2, Temperature,color_temperature, "Temperature");
         color_humidity.add(Color.parseColor("#0091EA"));
         init(chart3, Humidity, color_humidity,"Humidity");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(actionBar.getDisplayOptions()
+                | ActionBar.DISPLAY_SHOW_CUSTOM);
+        final ImageView imageView = new ImageView(actionBar.getThemedContext());
+        imageView.setScaleType(ImageView.ScaleType.CENTER);
+        checkNodeInFavourite();
+        imageView.setImageResource(status_favourite);
+        ActionBar.LayoutParams layoutParams = new ActionBar.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT,
+                ActionBar.LayoutParams.WRAP_CONTENT, Gravity.RIGHT
+                | Gravity.CENTER_VERTICAL);
+        layoutParams.leftMargin= 200;
 
+        imageView.setLayoutParams(layoutParams);
+        imageView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                if(action==MotionEvent.ACTION_DOWN){
+
+                    if(status_favourite==R.drawable.not_favourite){
+                        status_favourite=R.drawable.favourite;
+                        AddNodeToFavourite();
+                    }else if(status_favourite==R.drawable.favourite){
+                        status_favourite=R.drawable.not_favourite;
+                        RemoveNodeFromFavourite();
+                    }
+                }
+                imageView.setImageResource(status_favourite);
+                return true;
+            }
+
+
+        });
+        actionBar.setCustomView(imageView);
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                Bundle bundle = new Bundle();
+                bundle.putInt("CurrentFragment",1);
+                Intent intent = new Intent(Detail.this,MainActivity.class);
+                intent.putExtra("TapTin",bundle);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void init(BarChart chart, ArrayList<Long> Data, ArrayList<Integer>color, String type) {
@@ -196,6 +267,35 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     public void onNothingSelected() {
     }
 
+
+    public void checkNodeInFavourite(){
+        database = Database.initDatabase(this, "List_Favourite.sqlite");
+
+        Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        cursor.moveToFirst();
+        for(int i=0;i<cursor.getCount();i++){
+            int id = cursor.getInt(0);
+            if(id == ID ){
+                status_favourite=R.drawable.favourite;
+                break;
+            }
+            cursor.moveToNext();
+        }
+    }
+
+    public void AddNodeToFavourite(){
+        database = Database.initDatabase(this, "List_Favourite.sqlite");
+        Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ID",ID);
+        database.insert("Favourite",null, contentValues);
+    }
+
+    public void RemoveNodeFromFavourite(){
+        database = Database.initDatabase(this, "List_Favourite.sqlite");
+        database.delete("Favourite","ID = ?", new String[]{String.valueOf(ID)});
+
+    }
 
 
 }

@@ -56,6 +56,7 @@ public class PagerAdapter  extends FragmentStatePagerAdapter {
                 title = "ADV SEARCH";
                 break;
         }
+
         return title;
     }
 
