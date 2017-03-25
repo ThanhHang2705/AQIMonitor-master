@@ -16,15 +16,12 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:tabSelectedTextColor="#2e0bd4"
-        app:tabTextColor="#787272"
+        app:tabSelectedTextColor="#4285F6"
+        app:tabTextColor="#4285F6"
         android:scrollbarSize="10sp"
         app:tabGravity="fill"
         app:tabIndicatorColor="#2e0bd4"
-
-
         >
-
     </android.support.design.widget.TabLayout>
     <android.support.v4.view.ViewPager
         android:layout_above="@id/tab_layout"

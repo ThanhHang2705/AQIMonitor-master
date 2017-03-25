@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity
         setupTabIcons();
 
 
-
 //        CreateTable();
 //        showTable();
 //        getDataFromSQLite();
@@ -124,6 +123,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
+
+
 
     @Override
     public void onBackPressed() {
