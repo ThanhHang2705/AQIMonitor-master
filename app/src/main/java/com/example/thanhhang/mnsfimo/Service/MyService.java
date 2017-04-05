@@ -1,6 +1,7 @@
 package com.example.thanhhang.mnsfimo.Service;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,6 +9,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
@@ -17,15 +20,14 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
-import com.example.thanhhang.mnsfimo.Activities.ResultActivity;
 import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.R;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 import static com.github.mikephil.charting.charts.Chart.LOG_TAG;
 
@@ -35,9 +37,9 @@ public class MyService extends Service {
     static SQLiteDatabase database;
     private final IBinder mBinder = new LocalBinder();
     private static boolean on_off_noti = false;
-    static String NameNode=null;
-    static int Conditional=-1;
-    static double PM25=0;
+    String NameNode=null;
+    int Conditional=-1;
+    int PM25=0;
     ArrayList<Data> ListNotificationOfNode ;
     ArrayList<KQNode>FavouriteList;
     DataFromLocalHost dataFromLocalHost;
@@ -79,7 +81,6 @@ public class MyService extends Service {
         super.onCreate();
         ListNotificationOfNode = new ArrayList<>();
         database =this.openOrCreateDatabase("FeatureOfInterest.sqlite", getApplicationContext().MODE_PRIVATE,null);
-        UpdateListNotification();
         getListNotification();
         Temperature = new ArrayList<>();
         PM_25 = new ArrayList<>();
@@ -94,7 +95,12 @@ public class MyService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 //        play.start();
-
+        if(intent!=null){
+            this.NameNode = intent.getStringExtra("NameNode");
+            this.Conditional = intent.getIntExtra("Conditional",this.Conditional);
+            this.PM25 = intent.getIntExtra("PM",this.PM25);
+            UpdateListNotification(NameNode,PM25,Conditional);
+        }
         SendNotification();
         return START_STICKY;
     }
@@ -110,7 +116,7 @@ public class MyService extends Service {
 
 
 
-    public void CreateNotification(double pm25){
+    public void CreateNotification(double pm25, String name_node){
 
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr;
@@ -118,20 +124,33 @@ public class MyService extends Service {
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder =
                 (NotificationCompat.Builder) new NotificationCompat.Builder(getApplicationContext())
+                        .setSmallIcon(R.drawable.ic_app,0)
+                        .setLargeIcon(BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.icon_notify)).setVisibility(View.GONE)
 
-                        .setSmallIcon(R.drawable.ic_app)
-                        .setContentTitle("PM Monitor")
+                        .setColor(Color.TRANSPARENT)
+
+                        .setContentTitle("PM: "+pm25)
                         .setSound(uri)
-                        .setContentText("PM: "+pm25);
+                        .setContentText(name_node);
 
 
+        Notification notification = mBuilder.build();
+        int smallIconId = getApplicationContext().getResources().getIdentifier("right_icon", "id", android.R.class.getPackage().getName());
+        if (smallIconId != 0) {
+            notification.contentView.setViewVisibility(smallIconId, View.INVISIBLE);
+
+        }
         mNotifyMgr =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         // Builds the notification and issues it.
-        mNotifyMgr.notify(mNotificationId, mBuilder.build());
+        mNotifyMgr.notify(mNotificationId, notification);
+//        int smallIconId = getBaseContext().getResources().getIdentifier("right_icon", "id", android.R.class.getPackage().getName());
+//        if (smallIconId != 0) {
+//            mBuilder.bigContentView.setViewVisibility(smallIconId, View.INVISIBLE);
+//        }
 
 
-        Intent resultIntent = new Intent(getApplicationContext(), ResultActivity.class);
+        Intent resultIntent = new Intent(getApplicationContext(), MyService.class);
         resultIntent.putExtra("content", "PM: null\n");
 
         PendingIntent resultPendingIntent =
@@ -157,21 +176,22 @@ public class MyService extends Service {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                UpdateData();
+//                                UpdateData();
 
                             }
                         }).start();
                     }
-                    UpdateListNotification();
                     getListNotification();
                     for (int i=0;i<ListNotificationOfNode.size();i++){
-                        int conditional = ListNotificationOfNode.get(i).getCondtional();
+
                         if(PM_25.size()>0){
-                            PM25=PM_25.get(0);
+                            PM25=PM_25.get(0).intValue();
                         }else{
-                            PM25=ListNotificationOfNode.get(i).getPM25();
+                            double pm25=ListNotificationOfNode.get(i).getPM25();
+                            String name_node = ListNotificationOfNode.get(i).getNameNode();
+                            int conditional = ListNotificationOfNode.get(i).getCondtional();
+                            ConditionalToNotification(conditional, name_node, pm25);
                         }
-                        ConditionalToNotification(conditional);
                         try {
                             Thread.sleep(15000);
                         } catch (InterruptedException e) {
@@ -217,7 +237,7 @@ public class MyService extends Service {
             cursor.moveToNext();
         }
     }
-    public void UpdateListNotification(){
+    public void UpdateListNotification(String NameNode, double PM25, int Conditional){
         if(NameNode!=null){
             if(ListNotificationOfNode.size()==0){
 
@@ -241,7 +261,8 @@ public class MyService extends Service {
                         contentValues.put("PM25",PM25);
                         contentValues.put("Conditional",Conditional );
                         database.update("Notification", contentValues,"NAMENODE=?",new String[]{NameNode});
-                    }else if(!NameNode.equals(name_node)){
+                        break;
+                    }else if(!NameNode.equals(name_node) && i==ListNotificationOfNode.size()-1){
                         database =this.openOrCreateDatabase("FeatureOfInterest.sqlite", getApplicationContext().MODE_PRIVATE,null);
                         Cursor cursor = database.rawQuery("SELECT * FROM Notification",null);
                         ContentValues contentValues = new ContentValues();
@@ -250,7 +271,7 @@ public class MyService extends Service {
                         contentValues.put("PM25",PM25);
                         contentValues.put("Conditional",Conditional );
                         database.insert("Notification",null, contentValues);
-
+                        break;
                     }
                 }
             }
@@ -260,42 +281,43 @@ public class MyService extends Service {
 
     }
 
-    public void setNotification(String NameNode, int Conditional, double PM){
+    public void setNotification(String NameNode, int Conditional, int PM){
         this.NameNode = NameNode;
         this.Conditional = Conditional;
         this.PM25 = PM;
+//        UpdateListNotification();
 
     }
 
-    public void ConditionalToNotification(int Conditional){
-        String conditionall= "";
+    public void ConditionalToNotification(int Conditional, String NameNode, double PM25){
+
         if(Conditional == -1){
-            conditionall="";
+
         }else if(Conditional == 0){
-            CreateNotification(PM25);
+            CreateNotification(PM25,NameNode);
         }else if(Conditional == 1){
             if(PM25>35){
-                CreateNotification(PM25);
+                CreateNotification(PM25,NameNode);
             }
         }else if(Conditional == 2){
             if(PM25>75){
-                CreateNotification(PM25);
+                CreateNotification(PM25,NameNode);
             }
         }else if(Conditional == 3){
             if(PM25>115){
-                CreateNotification(PM25);
+                CreateNotification(PM25,NameNode);
             }
         }else if(Conditional == 4){
             if(PM25>150){
-                CreateNotification(PM25);
+                CreateNotification(PM25,NameNode);
             }
         }else if(Conditional == 5){
             if(PM25>250){
-                CreateNotification(PM25);
+                CreateNotification(PM25,NameNode);
             }
         }else if(Conditional == 6){
             if(PM25>350){
-                CreateNotification(PM25);
+                CreateNotification(PM25,NameNode);
             }
         }else if(Conditional==7){
 
@@ -304,19 +326,19 @@ public class MyService extends Service {
     }
 
     public void UpdateData(){
-        dataFromLocalHost = new DataFromLocalHost();
-        dataFromLocalHost.execute();
-        String AllData = null;
-        try {
-            AllData = dataFromLocalHost.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-        int size ;
-
-        dataFromLocalHost.ParseJsonData(AllData,PM_25,Temperature,Humidity);
+//        dataFromLocalHost = new DataFromLocalHost();
+//        dataFromLocalHost.execute();
+//        String AllData = null;
+//        try {
+//            AllData = dataFromLocalHost.get();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        }
+//        int size ;
+//
+//        dataFromLocalHost.ParseJsonData(AllData,PM_25,Temperature,Humidity);
     }
 
     public boolean isConnected(){

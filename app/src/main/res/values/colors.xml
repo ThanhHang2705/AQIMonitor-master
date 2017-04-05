@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2e0bd4</color>
+    <color name="colorPrimary">#4285F6</color>
     <color name="colorPrimaryDark">#261671</color>
-    <color name="colorAccent">#4043ff</color>
+    <color name="colorAccent">#283593</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="A700">#00BFA5</color>
     <color name="Black">#000000</color>
+    <color name="Gray">#9E9E9E</color>
+    <color name="tot">#4FD0FA</color>
+    <color name="binhthuong">#8BC441</color>
+    <color name="canhbao">#E0C303</color>
+    <color name="o_nhiem">#FB8C04</color>
+    <color name="rat_o_nhiem">#E63930</color>
+    <color name="vo_cung_o_nhiem">#614C84</color>
+    <color name="khong_the_song">#3C3C30</color>
+    <color name="complete_opacity">#00FFFFFF</color>
 </resources>

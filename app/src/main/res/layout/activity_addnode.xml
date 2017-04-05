@@ -7,34 +7,34 @@
     android:orientation="vertical"
     tools:context="com.example.thanhhang.mnsfimo.Activities.AddnodeActivity">
     <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="75dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="Thêm Node"
-        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"
+        android:text="Chọn thiết bị"
+        android:textSize="20sp"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="5dp"
-        />
-    <ListView
-        android:id="@+id/lv_NewNode"
-        android:layout_width="match_parent"
-        android:layout_height="337dp">
 
-    </ListView>
-
-    <Button
-        android:id="@+id/buttonScan"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Scan"
-        />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <ListView
+                android:id="@+id/lv_NewNode"
+                android:layout_width="match_parent"
+                android:layout_height="464dp"
+                android:layout_marginTop="20dp">
+
+            </ListView>
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>

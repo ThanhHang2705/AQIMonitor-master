@@ -1,13 +1,23 @@
 package com.example.thanhhang.mnsfimo.Activities;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
+import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,14 +53,13 @@ public class ListWifiForMCU extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_wifi_4_mcu);
         lv = (ListView)findViewById(lv_NewNode);
-        PassWord = (EditText)findViewById(R.id.pass_wifi);
         ListSSID4MCU = new ArrayList<>();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new getListWifi().execute("http://192.168.4.1/scan");
+                new getListWifi(ListWifiForMCU.this).execute("http://192.168.4.1/scan");
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -64,37 +73,45 @@ public class ListWifiForMCU extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView NameNode = (TextView) lv.getChildAt(position).findViewById(R.id.txt_NewNode);
                 SSID = NameNode.getText().toString();
+                loginDialog lgDialog = new loginDialog(ListWifiForMCU.this,SSID);
+
             }
         });
-        PassWord.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String url = "http://192.168.4.1/config?ssid="+SSID+"&pwd="+PassWord.getText().toString();
-                            new getListWifi().execute(url);
-                        }
-                    });
-                }
-
-                return false;
-            }
-        });
-
 
     }
 
     class getListWifi extends AsyncTask<String, String , String> {
-
+        ProgressDialog progressDialog;
+        Activity activity;
+        public getListWifi(Activity activity){
+            this.activity = activity;
+            progressDialog = new ProgressDialog(activity);
+        }
         @Override
         protected String doInBackground(String... params) {
             return docNoiDung_Tu_URL(params[0]);
+//            String s = "{\"ssid\":[{\"id\":0,\"ssid\":\"FIMO_TRUONGSA\",\"rssi\":-54,\"isOpen\":false}," +
+//                    "{\"id\":1,\"ssid\":\"PCNMang\",\"rssi\":-93,\"isOpen\":false}," +
+//                    "{\"id\":2,\"ssid\":\"TP-LINK_627C\",\"rssi\":-83,\"isOpen\":false}," +
+//                    "{\"id\":3,\"ssid\":\"FIMO_HOANGSA_518\",\"rssi\":-51,\"isOpen\":false}," +
+//                    "{\"id\":4,\"ssid\":\"TTKDCLGD\",\"rssi\":-90,\"isOpen\":false}," +
+//                    "{\"id\":5,\"ssid\":\"FIMO_HOANGSA_408\",\"rssi\":-79,\"isOpen\":false}," +
+//                    "{\"id\":6,\"ssid\":\"PM208-G2\",\"rssi\":-92,\"isOpen\":true}]}";
+//            return s;
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setTitle("Progress start");
+            progressDialog.show();
         }
 
         @Override
         protected void onPostExecute(String s) {
+            if(s!=null){
+                progressDialog.dismiss();
+            }
 //            Toast.makeText(getApplicationContext(),s,Toast.LENGTH_LONG).show();
             try {
                 JSONObject Data = new JSONObject(s);
@@ -104,10 +121,11 @@ public class ListWifiForMCU extends AppCompatActivity {
                     String SSID = Wifi.getString("ssid");
                     ListSSID4MCU.add(SSID);
                 }
+                adapter.notifyDataSetChanged();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            progressDialog.dismiss();
 
         }
 
@@ -145,7 +163,71 @@ public class ListWifiForMCU extends AppCompatActivity {
         return content.toString();
     }
 
+    class loginDialog extends AlertDialog{
+        String ssid;
+        TextView SSID;
+        EditText PassWord;
+        CheckBox ShowPassWord;
+        Button KetNoi,Huy;
+        protected loginDialog(@NonNull Context context, String ssid) {
+            super(context);
+            this.ssid=ssid;
+//        WindowManager.LayoutParams params = getContext().getWindow().getAttributes();
+//        params.gravity = Gravity.TOP;
+            final AlertDialog.Builder alertadd = new AlertDialog.Builder(getContext());
+            LayoutInflater factory = LayoutInflater.from(getContext());
+            final AlertDialog alertDialog = alertadd.create();
+            final View view = factory.inflate(R.layout.login_dialog, null);
+            SSID = (TextView)view.findViewById(R.id.ssid);
+            PassWord = (EditText)view.findViewById(R.id.pass_word);
+            ShowPassWord = (CheckBox)view.findViewById(R.id.show_pass_word);
+            KetNoi = (Button)view.findViewById(R.id.btx_ket_noi);
+            Huy = (Button)view.findViewById(R.id.btx_huy);
+            SSID.setText(ssid);
+            PassWord.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            KetNoi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+                    String url = "http://192.168.4.1/config?ssid="+SSID.getText().toString()+"&pwd="+PassWord.getText().toString();
+                    new getListWifi(ListWifiForMCU.this).execute(url);
+                }
+            });
+            Huy.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alertDialog.dismiss();
+                }
+            });
+            PassWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+                        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+//                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(v, InputMethodManager.SHOW_IMPLICIT);
+                    }
 
+                }
+            });
+            ShowPassWord.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked){
+                        PassWord.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                        PassWord.setSelection(PassWord.getText().length());
+                    }else{
+                        PassWord.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        PassWord.setSelection(PassWord.getText().length());
+                    }
+                }
+            });
+            alertDialog.setView(view);
+            alertDialog.show();
+        }
+    }
 }
 
 

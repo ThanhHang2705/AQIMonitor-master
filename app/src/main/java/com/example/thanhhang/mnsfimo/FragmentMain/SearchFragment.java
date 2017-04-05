@@ -2,6 +2,8 @@ package com.example.thanhhang.mnsfimo.FragmentMain;
 
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
@@ -24,6 +26,7 @@ import android.widget.Spinner;
 
 import com.example.thanhhang.mnsfimo.Activities.RangeSeekBar;
 import com.example.thanhhang.mnsfimo.Activities.ResultActivity;
+import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
@@ -54,7 +57,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
 
     RangeSeekBar<Integer>  humidity,temperature;
     String NameOfAddress;
-    String[] AddressToFind;
+    ArrayList<String> AddressToFind;
     List<Address> address;
     LatLng CurrentLatLng;
     Spinner choose_pm,choose_time;
@@ -81,7 +84,9 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
         temperature = (RangeSeekBar<Integer>) view.findViewById(R.id.temperature);
         humidity = (RangeSeekBar<Integer>) view.findViewById(R.id.humidity);
 
+
         choose_pm = (Spinner)view.findViewById(R.id.choose_pm);
+        choose_pm.setSelection(0);
         choose_time = (Spinner)view.findViewById(R.id.choose_time);
         temperature.setRangeValues(0,50);
         humidity.setRangeValues(0,100);
@@ -99,6 +104,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         choose_pm.setAdapter(adapter);
+
         choose_pm.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -179,7 +185,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
     public View.OnClickListener On_Click_nangcao = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            MyFindPlace();
+            MyFindPlace2();
             Bundle bundle = new Bundle();
             bundle.putStringArrayList("Result", ListResult);
             Intent intent = new Intent(getActivity(),ResultActivity.class);
@@ -232,7 +238,29 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
                 List<Integer> typePlace;
                 Address.setText(place.getAddress());
                 NameOfAddress = place.getName().toString();
-                AddressToFind = place.getAddress().toString().split(", ");
+                String s = place.getAddress().toString();
+                s = s.trim();
+                for (int i=0;i<s.length();i++){
+                    if(s.charAt(i)=='.'){
+                        s = s.substring(i+2);
+                        break;
+                    }
+                }
+
+                String[] temp = s.split(", ");
+                for(int i=0;i<temp.length-1;i++){
+                    for(int j=i+1;j<temp.length;j++){
+                        if(temp[i].equals(temp[j])){
+                            temp[i]="";
+                        }
+                    }
+                }
+                AddressToFind = new ArrayList<>();
+                for(int i=0;i<temp.length;i++){
+                    if(temp[i]!=""){
+                        AddressToFind.add(temp[i]);
+                    }
+                }
                 CurrentLatLng = place.getLatLng();
 //                getCompleteAddressString(latLng.latitude,latLng.longitude);
 
@@ -260,7 +288,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
                 for (int i = 0; i < returnedAddress.getMaxAddressLineIndex(); i++) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append(", ");
 //                    strAdd.add(returnedAddress.getAddressLine(i));
                 }
                 strAdd=strReturnedAddress.toString();
@@ -299,7 +327,7 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
                 int temperature = ListNode.get(i).getTemperature();
                 int humidity = ListNode.get(i).getHumidity();
                 for(int j=0;j<2;j++){
-                    String a = AddressToFind[j];
+                    String a = AddressToFind.get(j);
                     if(Node.contains(a)){
                         s = ListNode.get(i).getID()+"\n"+ListNode.get(i).getNameNode()+"\n"+
                                 ListNode.get(i).getAddress()+"\n"+PM+"\n"+humidity+"\n"+
@@ -352,6 +380,97 @@ public class SearchFragment extends Fragment implements GoogleApiClient.OnConnec
 
         }
 
+    }
+
+    public void MyFindPlace2(){
+        ListResult = new ArrayList<>();
+        if(CurrentLatLng!=null){
+            double latitude = CurrentLatLng.latitude;
+            double longTitude = CurrentLatLng.longitude;
+            Location currentLocation = new Location("A");
+
+            currentLocation.setLongitude(longTitude);
+            currentLocation.setLatitude(latitude);
+            String s=null;
+            for(int j=0;j<2;j++){
+                if(ListResult.size()>0){
+                    break;
+                }
+                String a = AddressToFind.get(j);
+                SQLiteDatabase database = Database.initDatabase(getActivity(),"FeatureOfInterest.sqlite");
+                a="SELECT * FROM Data WHERE Address LIKE '%"+a+"%'";
+                Cursor cursor = database.rawQuery(a, null);
+                if(cursor.getCount()>0){
+                    cursor.moveToFirst();
+                    for(int k=0;k<cursor.getCount();k++){
+                        int ID = cursor.getInt(0);
+                        String NameNode = cursor.getString(1);
+                        String Address = cursor.getString(2);
+                        String PM = cursor.getString(3);
+                        latitude = cursor.getDouble(4);
+                        longTitude = cursor.getDouble(5);
+//                        LatLng latLng = new LatLng(cursor.getDouble(4),cursor.getDouble(5));
+                        int Humidity = 43;
+                        int Temperature = 32;
+                        s = ID+"\n"+NameNode+"\n"+Address+"\n"+PM+"\n"+Humidity+"\n"+
+                                Temperature+"\n"+latitude+"\n"+ longTitude;
+                        ListResult.add(s);
+                        cursor.moveToNext();
+                    }
+                }
+            }
+            if(ListResult.size()==0){
+                for(int i=0;i<ListNode.size();i++){
+                    Location AnotherLocation = new Location("B");
+                    latitude=ListNode.get(i).getLatLng().latitude;
+                    longTitude=ListNode.get(i).getLatLng().longitude;
+                    int PM = (int) Math.round(Double.parseDouble(ListNode.get(i).getPM()));
+                    String Node=getCompleteAddressString(latitude,longTitude);
+                    int temperature = ListNode.get(i).getTemperature();
+                    int humidity = ListNode.get(i).getHumidity();
+                    if(s==null){
+                        AnotherLocation.setLatitude(latitude);
+                        AnotherLocation.setLongitude(longTitude);
+                        double distance = currentLocation.distanceTo(AnotherLocation);
+                        if(distance<=3000){
+                            PM = (int) Math.round(Double.parseDouble(ListNode.get(i).getPM()));
+                            if ( PM>min_pm){
+                                if(temperature<=max_temperature && temperature>=min_temperature){
+                                    if(humidity<=max_humidity && humidity>=min_humidity){
+                                        s = ListNode.get(i).getID()+"\n"+ListNode.get(i).getNameNode()+"\n"+
+                                                ListNode.get(i).getAddress()+"\n"+PM+"\n"+humidity+"\n"+
+                                                temperature+"\n"+ListNode.get(i).getLatLng().latitude+"\n"+
+                                                ListNode.get(i).getLatLng().longitude;
+
+                                        ListResult.add(s);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }else{
+            for(int i=0;i<ListNode.size();i++){
+
+                int PM = (int) Math.round(Double.parseDouble(ListNode.get(i).getPM()));
+                if ( PM>min_pm){
+                    int temperature = ListNode.get(i).getTemperature();
+                    if(temperature<=max_temperature && temperature>=min_temperature){
+                        int humidity = ListNode.get(i).getHumidity();
+                        if(humidity<=max_humidity && humidity>=min_humidity){
+                            String s = ListNode.get(i).getID()+"\n"+ListNode.get(i).getNameNode()+"\n"+
+                                    ListNode.get(i).getAddress()+"\n"+PM+"\n"+humidity+"\n"+
+                                    temperature+"\n"+ListNode.get(i).getLatLng().latitude+"\n"+
+                                    ListNode.get(i).getLatLng().longitude;
+                            ListResult.add(s);
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     public void RemoveNameFromAddress(){

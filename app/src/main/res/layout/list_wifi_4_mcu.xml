@@ -3,33 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="75dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="Danh sách Wifi"
-        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"
+        android:text="Chọn thiết bị"
+        android:textSize="20sp"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#000"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="5dp"
-        />
+
     <ListView
+        android:layout_marginTop="20dp"
         android:id="@+id/lv_NewNode"
         android:layout_width="match_parent"
-        android:layout_height="337dp">
+        android:layout_height="match_parent">
 
     </ListView>
-
-    <EditText
-        android:id="@+id/pass_wifi"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword" />
 </LinearLayout>

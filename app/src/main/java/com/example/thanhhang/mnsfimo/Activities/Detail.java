@@ -1,25 +1,38 @@
 package com.example.thanhhang.mnsfimo.Activities;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.MainActivity;
 import com.example.thanhhang.mnsfimo.R;
+import com.example.thanhhang.mnsfimo.Service.MyService;
 import com.example.thanhhang.mnsfimo.customdata.MyAxisValueFormatter;
 import com.example.thanhhang.mnsfimo.customdata.TimeAxisValueFormatter;
 import com.example.thanhhang.mnsfimo.customdata.XYMarkerView;
@@ -43,9 +56,10 @@ import java.util.ArrayList;
  */
 
 public class Detail extends AppCompatActivity implements OnChartValueSelectedListener {
-    static int PM;
     String NameNode;
     int ID=1;
+    int PM;
+    int currentFragment = -1;
     private BarChart chart1, chart2, chart3;
     ArrayList<Long> Temperature, PM25, Humidity;
     String AllData="";
@@ -59,14 +73,13 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
         setContentView(R.layout.detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-                DataFromLocalHost dataFromLocalHost = new DataFromLocalHost();
                 Intent intent = getIntent();
                 Bundle bundle = intent.getBundleExtra("TapTin");
                 if (bundle != null) {
-//                    PM = bundle.getInt("PM");
+                    PM = bundle.getInt("PM");
                     ID = bundle.getInt("ID");
                     NameNode = bundle.getString("Address");
-                    AllData = bundle.getString("AllData");
+                    currentFragment = bundle.getInt("CurrentFragment");
                 }
 //
 
@@ -75,13 +88,9 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
                 Temperature = new ArrayList<>();
                 PM25 = new ArrayList<>();
                 Humidity = new ArrayList<>();
-                int size ;
 
-                dataFromLocalHost.ParseJsonData(AllData,PM25,Temperature,Humidity);
-                size = PM25.size();
-//
-//
-
+        new ProgressTask(Detail.this).execute();
+        new DataFromLocalHost().ParseJsonData(AllData,PM25,Temperature,Humidity);
         textView = (TextView)findViewById(R.id.address);
         textView.setText(NameNode);
         chart1 = (BarChart) findViewById(R.id.bar_graph1);
@@ -138,14 +147,78 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                Bundle bundle = new Bundle();
-                bundle.putInt("CurrentFragment",1);
-                Intent intent = new Intent(Detail.this,MainActivity.class);
-                intent.putExtra("TapTin",bundle);
-                startActivity(intent);
+                finish();
+//                int i = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+//                startActivityForResult(new Intent(getApplicationContext(),ResultActivity.class),Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                if(currentFragment>=0){
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("CurrentFragment",currentFragment);
+                    Intent intent = new Intent(Detail.this,MainActivity.class);
+                    intent.putExtra("TapTin",bundle);
+                    startActivity(intent);
+                }else{
+                    finish();
+                }
+
+
                 return true;
+            case R.id.notificatioin_setting:
+                final AlertDialog.Builder alertadd = new AlertDialog.Builder(Detail.this);
+                LayoutInflater factory = LayoutInflater.from(Detail.this);
+                final View view = factory.inflate(R.layout.level_api_alert, null);
+                final AlertDialog alertDialog = alertadd.create();
+                Button OK = (Button)view.findViewById(R.id.notification_ok);
+                Button Cancel = (Button)view.findViewById(R.id.notification_cancel);
+                final RadioGroup PM_Notification = (RadioGroup)view.findViewById(R.id.pm_notification);
+                final int[] Conditional = new int[1];
+                PM_Notification.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup group, int checkedId) {
+                        int ID = checkedId;
+                        int SelectedID = PM_Notification.getCheckedRadioButtonId();
+                        RadioButton RB = (RadioButton)view.findViewById(SelectedID);
+                        Conditional[0] = PM_Notification.indexOfChild(RB);
+                    }
+                });
+
+
+                OK.setOnClickListener(new View.OnClickListener() {
+                    @SuppressLint("NewApi")
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                        Intent mServiceIntent = new Intent(getBaseContext(), MyService.class);
+                        mServiceIntent.putExtra("NameNode", NameNode);
+                        mServiceIntent.putExtra("Conditional",Conditional[0]);
+                        mServiceIntent.putExtra("PM",PM);
+                        startService(mServiceIntent);
+//                        getSystemService(MyService.class).setNotification(NameNode,Conditional[0],PM);
+
+
+                    }
+                });
+
+                Cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+                alertDialog.setView(view);
+                alertDialog.show();
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+
+
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void init(BarChart chart, ArrayList<Long> Data, ArrayList<Integer>color, String type) {
@@ -269,7 +342,7 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
 
 
     public void checkNodeInFavourite(){
-        database = Database.initDatabase(this, "List_Favourite.sqlite");
+        database = Database.initDatabase(this, "FeatureOfInterest.sqlite");
 
         Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
         cursor.moveToFirst();
@@ -284,18 +357,63 @@ public class Detail extends AppCompatActivity implements OnChartValueSelectedLis
     }
 
     public void AddNodeToFavourite(){
-        database = Database.initDatabase(this, "List_Favourite.sqlite");
-        Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        database = Database.initDatabase(this, "FeatureOfInterest.sqlite");
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("ID",ID);
         database.insert("Favourite",null, contentValues);
+        Cursor cursor = database.rawQuery("SELECT * FROM Favourite", null);
+        int size = cursor.getCount();
+        cursor.moveToFirst();
+//        int id = cursor.getInt(0);
     }
 
     public void RemoveNodeFromFavourite(){
-        database = Database.initDatabase(this, "List_Favourite.sqlite");
+        database = Database.initDatabase(this, "FeatureOfInterest.sqlite");
         database.delete("Favourite","ID = ?", new String[]{String.valueOf(ID)});
 
     }
 
+    public class ProgressTask extends AsyncTask<String, String, String> {
+        DataFromLocalHost dataFromLocalHost;
+        public ProgressTask(Detail activity) {
+            this.activity = activity;
+            dialog = new ProgressDialog(activity);
 
+        }
+
+        /** progress dialog to show user that the backup is processing. */
+        private ProgressDialog dialog;
+        /** application context. */
+        private Activity activity;
+
+        protected void onPreExecute() {
+            this.dialog.setMessage("Progress start");
+            this.dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            AllData=s;
+            if(AllData=="") {
+                Toast.makeText(activity, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+            }else if(AllData.equals("Không có dữ liệu")){
+                Toast.makeText(activity, "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+            }
+            dialog.dismiss();
+
+        }
+
+        protected String doInBackground(final String... args) {
+            dataFromLocalHost= new DataFromLocalHost();
+            String AllData = null;
+
+                AllData = dataFromLocalHost.getData();
+
+            return AllData;
+        }
+    }
 }
+
+

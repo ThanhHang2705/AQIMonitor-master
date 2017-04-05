@@ -33,6 +33,7 @@
     </LinearLayout>-->
 
     <ScrollView
+        android:id="@+id/scrollviewmapfragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -46,7 +47,9 @@
                 android:id="@+id/result_4_basic_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorWhite" />
+                android:background="@color/colorWhite"
+                android:dividerHeight="1dp"
+                android:divider="@color/Gray" />
         </LinearLayout>
     </ScrollView>
 

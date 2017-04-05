@@ -17,10 +17,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,15 +26,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ScrollView;
 
 import com.example.thanhhang.mnsfimo.Activities.Detail;
 import com.example.thanhhang.mnsfimo.Adapters.KQuaAdapter;
-import com.example.thanhhang.mnsfimo.Data.DataFromLocalHost;
 import com.example.thanhhang.mnsfimo.Data.Database;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.MainActivity;
@@ -52,7 +44,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -74,6 +65,7 @@ public class MapFragment extends Fragment {
     };
     ArrayList<KQNode>listLove;
     ListView listView;
+    ScrollView scrollView;
     KQuaAdapter arrayAdapter;
     private static ArrayList<String> COUNTRIES2;
     private ArrayList<KQNode> ListNode;
@@ -92,6 +84,7 @@ public class MapFragment extends Fragment {
         UpdateListNode();
         UpdateListNameNode();
         listView = (ListView) v.findViewById(R.id.result_4_basic_search);
+        scrollView = (ScrollView)v.findViewById(R.id.scrollviewmapfragment);
         arrayAdapter = new KQuaAdapter(ListNode,getContext());
         listView.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
@@ -100,6 +93,7 @@ public class MapFragment extends Fragment {
         lp.height = Resources.getSystem().getDisplayMetrics().heightPixels;
         listView.setLayoutParams(lp);
         listView.setVisibility(View.GONE);
+        scrollView.setVisibility(View.GONE);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -138,31 +132,50 @@ public class MapFragment extends Fragment {
                 UpdateListNode();
                 for(int i=0;i<ListNode.size();i++){
                     int PM = Integer.parseInt(ListNode.get(i).getPM());
-                    if(PM<=50) {
+                    if(PM<=35) {
                         map.addMarker(new MarkerOptions()
                                 .position(ListNode.get(i).getLatLng())
                                 .title(ListNode.get(i).getNameNode())
-                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.green_square2,Color.YELLOW)))
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.tot,Color.BLACK)))
                                 .snippet(ListNode.get(i).getPM()));
-                    }else if(PM>50 && PM<=100){
+                    }else if(PM>35 && PM<=75){
                         map.addMarker(new MarkerOptions()
                                 .position(ListNode.get(i).getLatLng())
                                 .title(ListNode.get(i).getNameNode())
-                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.yellow_square2, Color.BLACK)))
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.binhthuong, Color.BLACK)))
                                 .snippet(ListNode.get(i).getPM()));
-                    }else if(PM>100 && PM<=150){
+                    }else if(PM>75 && PM<=115){
                         map.addMarker(new MarkerOptions()
                                 .position(ListNode.get(i).getLatLng())
                                 .title(ListNode.get(i).getNameNode())
-                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.orange_square2, Color.BLACK)))
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.canhbao, Color.BLACK)))
                                 .snippet(ListNode.get(i).getPM()));
-                    }else if(PM>150 && PM<=200){
+                    }else if(PM>115 && PM<=150){
                         map.addMarker(new MarkerOptions()
                                 .position(ListNode.get(i).getLatLng())
                                 .title(ListNode.get(i).getNameNode())
-                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.red_square2, Color.WHITE)))
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.o_nhiem, Color.WHITE)))
+                                .snippet(ListNode.get(i).getPM()));
+                    }else if(PM>150 && PM<=250) {
+                        map.addMarker(new MarkerOptions()
+                                .position(ListNode.get(i).getLatLng())
+                                .title(ListNode.get(i).getNameNode())
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.rat_o_nhiem, Color.WHITE)))
+                                .snippet(ListNode.get(i).getPM()));
+                    }else if(PM>250 && PM<=350) {
+                        map.addMarker(new MarkerOptions()
+                                .position(ListNode.get(i).getLatLng())
+                                .title(ListNode.get(i).getNameNode())
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.vo_cung_o_nhiem, Color.WHITE)))
+                                .snippet(ListNode.get(i).getPM()));
+                    }else if(PM>350 && PM<=999) {
+                        map.addMarker(new MarkerOptions()
+                                .position(ListNode.get(i).getLatLng())
+                                .title(ListNode.get(i).getNameNode())
+                                .icon(BitmapDescriptorFactory.fromBitmap(DrawMarker(ListNode.get(i).getPM(), R.mipmap.khong_the_song, Color.WHITE)))
                                 .snippet(ListNode.get(i).getPM()));
                     }
+
 
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(ListNode.get(i).getLatLng(),10));
                 }
@@ -173,119 +186,22 @@ public class MapFragment extends Fragment {
                     @Override
                     public boolean onMarkerClick(final Marker marker) {
 
-                        DataFromLocalHost dataFromLocalHost = new DataFromLocalHost();
-                        dataFromLocalHost.execute();
-                        String AllData = null;
-                        try {
-                            AllData = dataFromLocalHost.get();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                        final AlertDialog.Builder alertadd = new AlertDialog.Builder(getContext());
-                        LayoutInflater factory = LayoutInflater.from(getContext());
-                        final View view = factory.inflate(R.layout.location_info, null);
-                        TextView tvTitle = (TextView)view.findViewById(R.id.title);
-                        tvTitle.setText(marker.getTitle());
-                        final AlertDialog alertDialog = alertadd.create();
-
-                        ImageView imgView = ((ImageView)view.findViewById(R.id.img));
-                        int PM = Integer.parseInt(marker.getSnippet());
-                        if(PM<=50) {
-                            imgView.setImageBitmap(DrawMarker(marker.getSnippet(), R.mipmap.green, Color.YELLOW));
-                        }else if(PM>50 && PM<=100){
-                            imgView.setImageBitmap(DrawMarker(marker.getSnippet(), R.mipmap.yellow, Color.BLACK));
-                        }
-                        else if(PM>100 && PM<=150){
-                            imgView.setImageBitmap(DrawMarker(marker.getSnippet(), R.mipmap.orange, Color.BLACK));
-                        }
-                        else if(PM>150 && PM<=200){
-                            imgView.setImageBitmap(DrawMarker(marker.getSnippet(), R.mipmap.red, Color.WHITE));
-                        }
-                        @SuppressWarnings("unused") final
-                        Button detail = (Button)view.findViewById(R.id.detail);
-                        final String finalAllData = AllData;
-                        detail.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Toast.makeText(getContext(),"detail",Toast.LENGTH_LONG).show();
-                                Bundle bundle = new Bundle();
-                                bundle.putString("AllData", finalAllData);
-                                String NameNode=marker.getTitle().toString();
-                                for (int i=0 ;i<ListNode.size();i++){
-                                    String nameNode = ListNode.get(i).getNameNode();
-                                    if(NameNode.equals(nameNode)){
-                                        //                                Toast.makeText(getContext(),temp.get(i).getID(),Toast.LENGTH_LONG).show();
-                                        bundle.putInt("ID",ListNode.get(i).getID());
-                                        break;
-                                    }
-                                }
-//                                bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
-//                                bundle.putString("Address", marker.getTitle());
-                                Intent intent = new Intent(getContext(),Detail.class);
-                                intent.putExtra("TapTin", bundle);
-                                startActivity(intent);
+                        Bundle bundle = new Bundle();
+                        String NameNode = marker.getTitle().toString();
+                        for (int i = 0; i < ListNode.size(); i++) {
+                            String nameNode = ListNode.get(i).getNameNode();
+                            if (NameNode.equals(nameNode)) {
+                                //                                Toast.makeText(getContext(),temp.get(i).getID(),Toast.LENGTH_LONG).show();
+                                bundle.putInt("ID", ListNode.get(i).getID());
+                                break;
                             }
-                        });
-                        @SuppressWarnings("unused")
-                        Button follow = (Button)view.findViewById(R.id.follow);
-                        follow.setOnClickListener(new View.OnClickListener() {
-
-                            @Override
-                            public void onClick(View v) {
-                                alertDialog.dismiss();
-                                ViewPager pager = ((MainActivity)getActivity()).pager;
-                                /*Toast.makeText(getContext(),"follow",Toast.LENGTH_LONG).show();*/
-                                pager.getAdapter().notifyDataSetChanged();
-                                pager.setCurrentItem(1);
-                                UpdateListLove();
-                                if(listLove.size()==0){
-                                    KQNode kqNode = new KQNode(marker.getTitle().toString(), marker.getSnippet(),23,43,marker.getPosition());
-//                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
-                                    InsertDataToFavouriteListSQLite(marker.getTitle().toString());
-
-                                }else{
-                                    String NameNode = marker.getTitle().toString();
-                                    for(int i=0; i<listLove.size();i++){
-                                        String NameNodeToCompare = listLove.get(i).getNameNode();
-                                        if(NameNode.equals(NameNodeToCompare)){
-                                            break;
-                                        }else if(i==listLove.size()-1){
-                                            KQNode kqNode = new KQNode(marker.getTitle().toString(), marker.getSnippet(),23,43,marker.getPosition());
-//                                Love love = new Love(marker.getTitle().toString(), Integer.parseInt(marker.getSnippet()),23,43,marker.getPosition());
-                                            InsertDataToFavouriteListSQLite(marker.getTitle().toString());
-                                            break;
-                                        }
-                                    }
-                                }
-                                ArrayList<Fragment> al = (ArrayList<Fragment>) getFragmentManager().getFragments();
-
-                                Fragment removeFragment = al.get(1);
-                                if(removeFragment != null) {
-                                    getFragmentManager().beginTransaction().remove(removeFragment);
-                                }
-                                FragmentManager FM = getActivity().getSupportFragmentManager();
-                                FragmentTransaction fragmentTransaction = FM.beginTransaction();
-
-
-                                //fragmentTransaction.remove(getFragmentManager().findFragmentById(R.id.fragment_listmain));
-                                //getFragmentManager().executePendingTransactions();
-                                ListmainFragment fragment1 = new ListmainFragment();
-//                                fragment1.UpdateListLove();
-//                                fragment1.UpdateAdapter();
-                                fragmentTransaction.replace(R.id.fragment_listmain,fragment1);
-                                fragmentTransaction.detach(fragment1);
-                                fragmentTransaction.attach(fragment1);
-                                fragmentTransaction.commit();
-
-
-
-                            }
-                        });
-                        alertDialog.setView(view);
-                        alertDialog.show();
-
+                        }
+                        bundle.putInt("PM", Integer.parseInt(marker.getSnippet()));
+                        bundle.putString("Address", marker.getTitle());
+                        bundle.putInt("CurrentFragment",0);
+                        Intent intent = new Intent(getContext(), Detail.class);
+                        intent.putExtra("TapTin", bundle);
+                        startActivity(intent);
                         return false;
                     }
                 });
@@ -309,6 +225,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 listView.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
             }
         });
 
@@ -316,6 +233,7 @@ public class MapFragment extends Fragment {
             @Override
             public boolean onClose() {
                 listView.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
                 return false;
             }
         });
@@ -421,7 +339,7 @@ public class MapFragment extends Fragment {
                 /*paint.setTextSize(40);*/
         /*float scale = getResources().getDisplayMetrics().scaledDensity;*/
         float scale =width/35;
-        paint.setTextSize((int) (20 * scale));
+        paint.setTextSize((int) (17 * scale));
         Rect bounds = new Rect();
         String gText = number;
         paint.getTextBounds(gText, 0, gText.length(), bounds);

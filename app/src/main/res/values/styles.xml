@@ -6,6 +6,9 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:spinnerItemStyle">
+            @style/MySpinner
+        </item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -23,4 +26,21 @@
         <item name="android:textSize">9sp</item>
 
     </style>
+
+    <style name="ThemeSpinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">@color/Black</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">@color/colorPrimary</item>
+    </style>
+
+
+
+    <style name="MySpinner">
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/Black</item>
+    </style>
+
+
 </resources>

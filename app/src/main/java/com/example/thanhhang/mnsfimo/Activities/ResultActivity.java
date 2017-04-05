@@ -66,6 +66,7 @@ public class ResultActivity extends AppCompatActivity implements AdapterView.OnI
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
         startActivity(new Intent(getApplicationContext(),Detail.class));
     }
 

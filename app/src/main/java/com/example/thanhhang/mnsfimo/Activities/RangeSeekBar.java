@@ -15,11 +15,8 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
-import android.widget.ImageView;
 
-import com.example.thanhhang.mnsfimo.Activities.PixelUtil;
 import com.example.thanhhang.mnsfimo.R;
-
 
 import java.math.BigDecimal;
 
@@ -442,7 +439,7 @@ public class RangeSeekBar<T extends Number> extends android.support.v7.widget.Ap
 
         paint.setTextSize(mTextSize);
         paint.setStyle(Style.FILL);
-        paint.setColor(Color.GRAY);
+        paint.setColor(Color.parseColor("#4285F6"));
         paint.setAntiAlias(true);
 
         // draw min and max labels
@@ -450,9 +447,10 @@ public class RangeSeekBar<T extends Number> extends android.support.v7.widget.Ap
         String maxLabel = getContext().getString(R.string.demo_max_label);
         float minMaxLabelSize = Math.max(paint.measureText(minLabel), paint.measureText(maxLabel));
         float minMaxHeight = mTextOffset + thumbHalfHeight + mTextSize / 3;
-        canvas.drawText(minLabel, 0, minMaxHeight, paint);
-        canvas.drawText(maxLabel, getWidth() - minMaxLabelSize, minMaxHeight, paint);
-        padding = INITIAL_PADDING + minMaxLabelSize + thumbHalfWidth;
+//        canvas.drawText(minLabel, 0, minMaxHeight, paint);
+//        canvas.drawText(maxLabel, getWidth() - minMaxLabelSize, minMaxHeight, paint);
+//        padding = INITIAL_PADDING + minMaxLabelSize + thumbHalfWidth;
+        padding=30;
 
         // draw seek bar background line
         mRect.left = padding;
@@ -463,7 +461,7 @@ public class RangeSeekBar<T extends Number> extends android.support.v7.widget.Ap
                 getSelectedMaxValue().equals(getAbsoluteMaxValue()));
 
         int colorToUseForButtonsAndHighlightedLine = selectedValuesAreDefault ?
-                Color.GRAY :    // default values
+                Color.parseColor("#4285F6") :    // default values
                 DEFAULT_COLOR; //non default, filter is active
 
         // draw seek bar active range line

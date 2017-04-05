@@ -1,6 +1,5 @@
 package com.example.thanhhang.mnsfimo.Data;
 
-import android.os.AsyncTask;
 import android.os.Looper;
 
 import org.apache.http.HttpResponse;
@@ -19,15 +18,17 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
+import static junit.framework.Assert.assertEquals;
+
+public class DataFromLocalHost {
 
     public String Data = "";
     String result, current_time, before_time;
@@ -35,8 +36,7 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
 
     ArrayList<Long> Temperature, PM25, Humidity,  AllData;
 
-    @Override
-    protected String doInBackground(String... params) {
+    public String getData(){
         int time = 100;
 
         Calendar c = Calendar.getInstance();
@@ -54,31 +54,31 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
         current_time = FormatTime(Time);
         before_time = FormatTime(date);
         int dem = 0;
-        if(isConnectedToServer("http://118.70.72.15:8080/sos-bundle/service",1000)){
-            getsData();
-            while(Data==""|| dem==10){
+//        if(isConnectedToServer("http://118.70.72.15:8080/sos-bundle/service")){
+            getsDataFromServer();
+            while(Data==""){
                 try {
 //
                     Thread.sleep(time);
-                    time+=100;
+                    time+=200;
+                    if(dem==10){
+                        break;
+                    }
                     dem += 1;
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }
+
 
         return Data;
     }
 
-    @Override
-    protected void onPostExecute(String s) {
 
 
-    }
 
-    public void getsData(){
+    public void getsDataFromServer(){
         final String[] data = new String[1];
 
         Thread t = new Thread(new Runnable() {
@@ -217,12 +217,6 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
                 e.printStackTrace();
             }
 
-
-
-//            Temperature = new ArrayList<>();
-//            PM25 = new ArrayList<>();
-//            Humidity = new ArrayList<>();
-////            AllData = new ArrayList<>();
             for (int i =0;i<24;i++){
                 Temperature.add((long) 0);
                 PM25.add((long) 0);
@@ -233,6 +227,7 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
                 JSONArray Observations = JsonData.getJSONArray("observations");
                 String s1 = Observations.toString();
                 int size = Observations.length();
+                if(size==0){JSON_Data="Không có dữ liệu";}
 
                 for (int i=0; i<size; i++){
                     String ResultTime = Observations.getJSONObject(i).getString("resultTime");
@@ -268,14 +263,19 @@ public class DataFromLocalHost extends AsyncTask<String, Integer, String>{
         }
     }
 
-    public boolean isConnectedToServer(String url, int timeout) {
-        try{
-            URL myUrl = new URL(url);
-            URLConnection connection = myUrl.openConnection();
-            connection.setConnectTimeout(timeout);
-            connection.connect();
+    public boolean isConnectedToServer(String strUrl) {
+
+
+        try {
+            URL url = new URL(strUrl);
+            HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+            urlConn.connect();
+
+            assertEquals(HttpURLConnection.HTTP_OK, urlConn.getResponseCode());
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
+            System.err.println("Error creating HTTP connection");
+            e.printStackTrace();
             return false;
         }
     }

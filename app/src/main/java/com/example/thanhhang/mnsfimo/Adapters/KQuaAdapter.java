@@ -1,6 +1,7 @@
 package com.example.thanhhang.mnsfimo.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,11 @@ import android.widget.TextView;
 import com.example.thanhhang.mnsfimo.KQNode;
 import com.example.thanhhang.mnsfimo.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by ThanhHang on 12/5/2016.
@@ -70,28 +75,47 @@ public class KQuaAdapter extends BaseAdapter implements Filterable{
 //        KQNode kqNode = temporarylist.get(position);
 //        txt_id.setText("ID : "+ kq.getID());
         int PM = Integer.parseInt(kq.getPM());
+        txt_PM.setText(kq.getPM());
         if(PM>0 && PM<36){
             imageView.setImageResource(R.drawable.tot);
+            txt_PM.setTextColor(Color.parseColor("#4FD0FA"));
         }else if(PM>35 && PM<76){
             imageView.setImageResource(R.drawable.binhthuong);
+            txt_PM.setTextColor(Color.parseColor("#8BC441"));
         }else if(PM>75 && PM<116) {
             imageView.setImageResource(R.drawable.canhbao);
+            txt_PM.setTextColor(Color.parseColor("#E0C303"));
         }else if(PM>115 && PM<151) {
             imageView.setImageResource(R.drawable.xau0);
+            txt_PM.setTextColor(Color.parseColor("#FB8C04"));
         }else if(PM>150 && PM<251) {
             imageView.setImageResource(R.drawable.xau1);
+            txt_PM.setTextColor(Color.parseColor("#E63930"));
         }else if(PM>250 && PM<351) {
             imageView.setImageResource(R.drawable.xau2);
+            txt_PM.setTextColor(Color.parseColor("#614C84"));
         }else if(PM>350 && PM<1000) {
             imageView.setImageResource(R.drawable.xau3);
+            txt_PM.setTextColor(Color.parseColor("#3C3C30"));
         }
 
             txt_nameNode.setText(kq.getNameNode());
         txt_address.setText(kq.getAddress());
-        txt_PM.setText("PM 2.5 : " + kq.getPM());
-        txt_temp.setText("Temp: " + kq.getTemperature());
-        txt_hum.setText("Hum: "+ kq.getHumidity());
-//        txt_latlag.setText("LatLng: "+ kq.getLatLng());
+
+        String Temp = String.valueOf(kq.getTemperature());
+        txt_temp.setText(Temp);
+        txt_hum.setText(String.valueOf(kq.getHumidity()));
+        int time = 100;
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+        Date Time=null;
+        try {
+            Time = df.parse(df.format(c.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        txt_latlag.setText(Time.toString());
 
         return convertView;
     }

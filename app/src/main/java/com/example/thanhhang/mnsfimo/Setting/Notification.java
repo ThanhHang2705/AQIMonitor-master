@@ -55,7 +55,7 @@ public class Notification extends AppCompatActivity{
                 Intent intent = new Intent(Notification.this,MainActivity.class);
                 intent.putExtra("TapTin",bundle);
                 startActivity(intent);
-                new MyService().setNotification(NameNode,Conditional,PM25);
+                new MyService().setNotification(NameNode,Conditional,(int)PM25);
 
             }
         });

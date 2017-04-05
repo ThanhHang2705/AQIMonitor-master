@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="328dp"
+    android:layout_height="237dp">
+
+    <LinearLayout
+        android:layout_width="328dp"
+        android:layout_height="237dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:id="@+id/ssid"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="SSID"
+            android:textSize="20dp"
+            android:textColor="@color/Black"
+            />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="Mật khẩu"
+            android:textSize="10dp"/>
+
+        <EditText
+            android:id="@+id/pass_word"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:background="@drawable/underline"
+            android:textColor="@color/Black"
+             />
+
+        <CheckBox
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:id="@+id/show_pass_word"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hiển thị mật khẩu" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            >
+            <Button
+                android:id="@+id/btx_huy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HỦY"
+                android:background="@drawable/border"
+                android:textColor="@color/A700"
+                android:stateListAnimator="@null"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+            <Button
+                android:id="@+id/btx_ket_noi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KẾT NỐI"
+                android:layout_marginRight="21dp"
+                android:layout_marginEnd="21dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+
+                android:textColor="@color/A700"
+                android:background="@drawable/border"
+                android:stateListAnimator="@null" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

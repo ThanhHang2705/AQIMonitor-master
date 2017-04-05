@@ -9,11 +9,12 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/wifi"
+        android:src="@drawable/ic_signal_wifi_4_bar_lock_black_24dp"
+        android:id="@+id/signal"
         />
     <TextView
         android:id="@+id/txt_NewNode"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="25dp"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="50dp"
