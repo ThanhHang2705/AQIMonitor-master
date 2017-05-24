@@ -6,7 +6,7 @@
     xmlns:rsb="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-    tools:context="com.example.thanhhang.mnsfimo.FragmentMain.SearchFragment"
+    tools:context="fimo.uet.fairapp.FragmentMain.SearchFragment"
     android:background="@color/colorWhite">
 
 
@@ -141,7 +141,7 @@
                         android:text="Nhiệt độ"
                         android:textSize="10dp"/>
 
-                    <com.example.thanhhang.mnsfimo.Activities.RangeSeekBar
+                    <fimo.uet.fairapp.Activities.RangeSeekBar
                         android:id="@+id/temperature"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -183,7 +183,7 @@
                         android:textSize="10dp"
                         android:text="Độ ẩm" />
 
-                    <com.example.thanhhang.mnsfimo.Activities.RangeSeekBar
+                    <fimo.uet.fairapp.Activities.RangeSeekBar
 
                         android:id="@+id/humidity"
                         android:layout_width="match_parent"

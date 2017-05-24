@@ -5,7 +5,7 @@
     android:background="#d8fa88"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
-    tools:context="com.example.thanhhang.mnsfimo.FragmentMain.MapFragment">
+    tools:context="fimo.uet.fairapp.FragmentMain.MapFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

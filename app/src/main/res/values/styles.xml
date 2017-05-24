@@ -34,7 +34,12 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
     </style>
 
-
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
 
     <style name="MySpinner">
         <item name="android:padding">5dp</item>

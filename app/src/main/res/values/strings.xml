@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">PM 2.5 Monitor</string>
+    <string name="app_name">FAirApp</string>
     <string name="slogan">Vì một xã hội truyền cảm hứng </string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="device_connecting">Đang kết nối...</string>
+    <string name="data_processing">Đang xử lý...</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="demo_min_label">Min</string>
@@ -44,7 +45,7 @@
     <string name="humidity">Độ ẩm</string>
     <string name="temperature">Nhiệt độ </string>
     <string name="place">Địa điểm </string>
-    <string name="time1" >Thời gian</string>
+    <string name="time1">Thời gian</string>
     <string name="search">Tìm</string>
     <string name="cancel">Hủy</string>
     <string name="detail">Chi tiết</string>
@@ -52,7 +53,10 @@
     <string name="shownoti">Hiển thị thông báo</string>
     <string name="showwidget">Hiển thị ở witget</string>
     <string name="autodowload">Tự động tải dữ liệu khi có kết nối internet</string>
-
+    <string name="enable_internet">Thiết bị của bạn không kết nối tới Internet. Vui lòng kiểm tra lại</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 
 
 </resources>

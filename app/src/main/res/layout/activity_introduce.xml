@@ -5,7 +5,7 @@
     android:id="@+id/activity_introduce"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.thanhhang.mnsfimo.Activities.IntroduceActivity">
+    tools:context="fimo.uet.fairapp.Activities.IntroduceActivity">
 
     <android.support.design.widget.TabLayout
         android:background="#4285F6"
